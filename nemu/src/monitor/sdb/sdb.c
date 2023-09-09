@@ -71,6 +71,19 @@ static int cmd_si(char *args)
     return 0;
 }
 
+static int cmd_info(char *args)
+{
+    char *arg = strtok(NULL, " "); // arg or args?
+    if (arg == NULL) {
+        printf("The commad info need a subcommand");
+    } else if (strcmp(arg, "r") == 0) {
+        isa_reg_display();
+    } else {
+        printf("Subcommand is wrong!");
+    }
+    return 0;
+}
+
 static int cmd_help(char *args);
 
 static struct {
@@ -84,7 +97,7 @@ static struct {
 
     /* TODO: Add more commands */
     {"si", "Stop after N steps", cmd_si},
-
+    {"info", "print state of program", cmd_info},
 };
 
 #define NR_CMD ARRLEN(cmd_table)
