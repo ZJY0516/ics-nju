@@ -18,6 +18,7 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include "sdb.h"
+#include <memory/vaddr.h>
 
 static int is_batch_mode = false;
 
@@ -84,6 +85,33 @@ static int cmd_info(char *args)
     return 0;
 }
 
+static int cmd_x(char *args)
+{
+    char *arg = strtok(NULL, " "); // arg or args?
+    if (arg == NULL) {
+        printf("The commad info need a subcommand\n");
+    } else {
+        char *str_addr = strtok(NULL, " ");
+        if (str_addr == NULL) {
+            printf("We need a memory address\n");
+        } else {
+            int n = atoi(arg);
+            if (n <= 0) {
+                printf("N should be a positive number!\n");
+                return 0;
+            }
+            word_t addr = strtoul(str_addr, NULL, 16);
+            // 强制类型转换？
+            for (int i = 0; i < n; i++) {
+                // how to test
+                printf("%#20x\t\t%u\n", vaddr_read(addr + i * 4, 4),
+                       vaddr_read(addr + i * 4, 4));
+            }
+        }
+    }
+    return 0;
+}
+
 static int cmd_help(char *args);
 
 static struct {
@@ -98,6 +126,7 @@ static struct {
     /* TODO: Add more commands */
     {"si", "Stop after N steps", cmd_si},
     {"info", "print state of program", cmd_info},
+    {"x", "display memory", cmd_x},
 };
 
 #define NR_CMD ARRLEN(cmd_table)
