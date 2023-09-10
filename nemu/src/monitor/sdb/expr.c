@@ -164,6 +164,7 @@ static bool make_token(char *e)
             (i == 0 ||
              (tokens[i - 1].type != TK_NUM && tokens[i - 1].type != TK_HEX &&
               tokens[i - 1].type != TK_REG && tokens[i - 1].type != TK_KET))) {
+            // ugly
             tokens[i].type = TK_DEREF;
         }
     }
@@ -307,7 +308,8 @@ static word_t eval(int p, int q)
 /*
  *expr(string,&bool)
  * if success, return result of expression
- * else let *bool=false and return 1*/
+ * else let *bool=false and return 1
+ */
 word_t expr(char *e, bool *success)
 {
     if (!make_token(e)) {
