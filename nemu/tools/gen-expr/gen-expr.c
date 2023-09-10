@@ -41,7 +41,7 @@ uint32_t gen_rand_uint32() { return rand() % UINT32_MAX; }
 
 int choose(int n) { return rand() % n; }
 
-void gen_num() { sprintf(buf + strlen(buf), "%u", gen_rand_uint32()); }
+void gen_num() { sprintf(buf + strlen(buf), "%uu", gen_rand_uint32()); }
 
 static void gen_rand_expr(int max_length)
 {
