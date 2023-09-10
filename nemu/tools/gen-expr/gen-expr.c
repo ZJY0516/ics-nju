@@ -22,7 +22,7 @@
 
 // this should be enough
 static char buf[65536] = {'\0'};
-int max_length = 65500;
+int max_length = 60000;
 int len = 0;
 static char code_buf[65536 + 128] = {}; // a little larger than `buf`
 static char *code_format = "#include <stdio.h>\n"
