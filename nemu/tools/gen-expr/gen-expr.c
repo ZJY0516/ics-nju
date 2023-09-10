@@ -21,8 +21,9 @@
 #include <string.h>
 
 // this should be enough
-static char buf[65536] = {};
+static char buf[65536] = {'\0'};
 int max_length = 65530;
+int len = 0;
 static char code_buf[65536 + 128] = {}; // a little larger than `buf`
 static char *code_format = "#include <stdio.h>\n"
                            "int main() { "
@@ -41,34 +42,33 @@ uint32_t gen_rand_uint32() { return rand() % UINT32_MAX; }
 
 int choose(int n) { return rand() % n; }
 
-void gen_num() { sprintf(buf + strlen(buf), "%uu", gen_rand_uint32()); }
+void gen_num()
+{
+    if (len < max_length) {
+        int t = sprintf(buf + strlen(buf), "%uu", gen_rand_uint32());
+        len += t;
+    }
+}
 
-static void gen_rand_expr(int max_length)
+static void gen_rand_expr()
 {
     // buf[0] = '\0';
-    int length = strlen(buf);
-    while (length < max_length) {
-        switch (choose(3)) {
-        case 0:
-            if (strlen(buf) > 0 && rand() % 2 == 0) {
-                strcat(buf, " ");
-            }
-            gen_num();
-            break;
-        case 1:
-            strcat(buf, "(");
-            gen_rand_expr(max_length - 2);
-            strcat(buf, ")");
-            break;
-        default:
-            gen_rand_expr(max_length / 2);
-            if (length > 0 && rand() % 2 == 0) {
-                strcat(buf, " ");
-            }
-            sprintf(buf + length, " %c ", gen_rand_op());
-            gen_rand_expr(max_length / 2);
-            break;
-        }
+    switch (choose(3)) {
+    case 0:
+        gen_num();
+        break;
+    case 1:
+        strcat(buf, "(");
+        len++;
+        gen_rand_expr();
+        strcat(buf, ")");
+        len++;
+        break;
+    default:
+        gen_rand_expr();
+        gen_rand_op();
+        gen_rand_expr();
+        break;
     }
 }
 
@@ -82,7 +82,7 @@ int main(int argc, char *argv[])
     }
     int i;
     for (i = 0; i < loop; i++) {
-        gen_rand_expr(max_length);
+        gen_rand_expr();
 
         sprintf(code_buf, code_format, buf);
 
