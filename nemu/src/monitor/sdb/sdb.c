@@ -104,7 +104,8 @@ static int cmd_x(char *args)
             // 强制类型转换？
             for (int i = 0; i < n; i++) {
                 // how to test
-                printf("%#20x\t\t%u\n", vaddr_read(addr + i * 4, 4),
+                printf(FMT_PADDR "%#20x\t\t%u\n", addr + i * 4,
+                       vaddr_read(addr + i * 4, 4),
                        vaddr_read(addr + i * 4, 4));
             }
         }
