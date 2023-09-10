@@ -124,6 +124,39 @@ static int cmd_p(char *args)
         return 1;
 }
 
+static int cmd_test_expr(char *args)
+{
+    FILE *file = fopen("/home/zjy/code/ics2023/nemu/tools/gen-expr/input", "r");
+    if (file == NULL) {
+        perror("can not open file\n");
+        return 1;
+    }
+    char line[50000];
+    while (fgets(line, sizeof(line), file)) {
+        // 删除换行符（如果存在）
+        size_t line_length = strlen(line);
+        if (line_length > 0 && line[line_length - 1] == '\n') {
+            line[line_length - 1] = '\0';
+        }
+        char *result_str = strtok(line, " ");
+        char *expression_str = strtok(NULL, " ");
+        bool success;
+        char str_my_result[12] = "\0";
+        if (result_str != NULL && expression_str != NULL) {
+            word_t my_result = expr(expression_str, &success);
+            sprintf(str_my_result, "%u", my_result);
+            if (strcmp(result_str, str_my_result) == 0)
+                printf("pass\n");
+            else {
+                printf("fail!  %s\n", expression_str);
+            }
+        }
+    }
+    fclose(file);
+
+    return 0;
+}
+
 static int cmd_help(char *args);
 
 static struct {
@@ -140,6 +173,7 @@ static struct {
     {"info", "print state of program", cmd_info},
     {"x", "display memory", cmd_x},
     {"p", "eval", cmd_p},
+    {"test", "test expression", cmd_test_expr},
 };
 
 #define NR_CMD ARRLEN(cmd_table)
