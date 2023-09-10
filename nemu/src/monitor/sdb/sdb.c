@@ -118,7 +118,7 @@ static int cmd_p(char *args)
     bool success;
     word_t result = expr(args, &success);
     if (success) {
-        printf("%s=%u\n", args, result);
+        printf("%u\n", result);
         return 0;
     } else
         return 1;

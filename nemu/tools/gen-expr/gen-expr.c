@@ -22,7 +22,7 @@
 
 // this should be enough
 static char buf[65536] = {'\0'};
-int max_length = 65530;
+int max_length = 65500;
 int len = 0;
 static char code_buf[65536 + 128] = {}; // a little larger than `buf`
 static char *code_format = "#include <stdio.h>\n"
@@ -34,9 +34,11 @@ static char *code_format = "#include <stdio.h>\n"
 
 void gen_rand_op()
 {
-    char ops[] = {'+', '-', '*', '/'};
-    sprintf(buf + +strlen(buf), "%c", ops[rand() % 4]);
-    len++;
+    if (len < max_length) {
+        char ops[] = {'+', '-', '*', '/'};
+        sprintf(buf + +strlen(buf), "%c", ops[rand() % 4]);
+        len++;
+    }
 }
 
 uint32_t gen_rand_uint32() { return rand() % UINT32_MAX; }
@@ -92,9 +94,13 @@ int main(int argc, char *argv[])
         fputs(code_buf, fp);
         fclose(fp);
 
-        int ret = system("gcc /tmp/.code.c -o /tmp/.expr -O2 -Wall -Werror");
-        if (ret != 0)
+        int ret = system(
+            "gcc -w /tmp/.code.c -o /tmp/.expr -O2 -Wall -Werror 2>/dev/null");
+        if (ret != 0) {
+            memset(buf, '\0', sizeof(buf));
+            len = 0;
             continue;
+        }
 
         fp = popen("/tmp/.expr", "r");
         assert(fp != NULL);
@@ -104,6 +110,8 @@ int main(int argc, char *argv[])
         pclose(fp);
 
         printf("%u %s\n", result, buf);
+        memset(buf, '\0', sizeof(buf));
+        len = 0;
     }
     return 0;
 }
