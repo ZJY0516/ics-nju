@@ -41,7 +41,7 @@ enum {
     /* TODO: Add more token types */
 
 };
-#define MAX_TOKEN 100
+#define MAX_TOKEN 1000
 // the expression is illegal
 bool bad_expression = false;
 
