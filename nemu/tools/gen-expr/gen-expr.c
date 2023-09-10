@@ -32,10 +32,11 @@ static char *code_format = "#include <stdio.h>\n"
                            "  return 0; "
                            "}";
 
-char gen_rand_op()
+void gen_rand_op()
 {
     char ops[] = {'+', '-', '*', '/'};
-    return ops[rand() % 4];
+    sprintf(buf + +strlen(buf), "%c", ops[rand() % 4]);
+    len++;
 }
 
 uint32_t gen_rand_uint32() { return rand() % UINT32_MAX; }
