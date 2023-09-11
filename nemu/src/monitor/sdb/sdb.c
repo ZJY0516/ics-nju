@@ -79,13 +79,13 @@ static int cmd_info(char *args)
 {
     char *arg = strtok(NULL, " "); // arg or args?
     if (arg == NULL) {
-        printf("The commad info need a subcommand");
+        printf("The commad info need a subcommand\n");
     } else if (strcmp(arg, "r") == 0) {
         isa_reg_display();
     } else if (strcmp(arg, "w") == 0) {
         show_wp();
     } else {
-        printf("Subcommand is wrong!");
+        printf("Subcommand is wrong!\n");
     }
     return 0;
 }
