@@ -319,11 +319,11 @@ word_t expr(char *e, bool *success)
         *success = false;
         return 0;
     }
-    if (!check_parentheses(0, nr_token - 1)) {
-        *success = false;
-        Log("Bad expression! The brackets do not match.\n");
-        return 0;
-    }
+    // if (!check_parentheses(0, nr_token - 1)) {
+    //     *success = false;
+    //     Log("Bad expression! The brackets do not match.\n");
+    //     return 0;
+    // }
 
     /* TODO: Insert codes to evaluate the expression. */
     word_t ans = eval(0, nr_token - 1);
