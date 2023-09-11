@@ -189,7 +189,7 @@ static bool check_parentheses(int p, int q)
             bad_expression = true;
             return false;
         }
-        if (top == 0) //"(4 + 3) * (2 - 1)"
+        if (top == 0) //"(4 + 3) * (2 - 1)"?
             result = false;
     }
     return result;
@@ -257,6 +257,7 @@ static word_t eval(int p, int q)
     // maybe call eval too much
     if (p > q) {
         Log("Bad expression!\n");
+        bad_expression = true;
         return 0;
     } else if (p == q) {
         word_t num;
@@ -283,8 +284,13 @@ static word_t eval(int p, int q)
         return vaddr_read(addr, sizeof(word_t));
     } else {
         int main_op_index = find_main_op(p, q);
-        word_t val1 = eval(p, main_op_index - 1);
-        word_t val2 = eval(main_op_index + 1, q);
+        word_t val1, val2;
+        if (!bad_expression) {
+            val1 = eval(p, main_op_index - 1);
+            val2 = eval(main_op_index + 1, q);
+        } else {
+            val1 = 1, val2 = 1;
+        }
         switch (tokens[main_op_index].type) {
         case TK_PLUS:
             return val1 + val2;
