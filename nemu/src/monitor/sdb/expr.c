@@ -252,7 +252,7 @@ static int find_main_op(int p, int q)
 static word_t eval(int p, int q)
 {
     // assume all result are uint32_t
-    // (1880862234/(1
+    // (1
     // obviously it's a bad expression, but it will cause stack-overflow
     // maybe call eval too much
     if (p > q) {
@@ -317,6 +317,11 @@ word_t expr(char *e, bool *success)
 {
     if (!make_token(e)) {
         *success = false;
+        return 0;
+    }
+    if (!check_parentheses(0, nr_token - 1)) {
+        *success = false;
+        Log("Bad expression! The brackets do not match.\n");
         return 0;
     }
 
