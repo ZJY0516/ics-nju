@@ -95,7 +95,7 @@ int main(int argc, char *argv[])
         fclose(fp);
 
         int ret = system(
-            "gcc -w /tmp/.code.c -o /tmp/.expr -O2 -Wall -Werror 2>/dev/null");
+            "gcc /tmp/.code.c -o /tmp/.expr -O2 -Wall -Werror 2>/dev/null");
         if (ret != 0) {
             memset(buf, '\0', sizeof(buf));
             len = 0;
