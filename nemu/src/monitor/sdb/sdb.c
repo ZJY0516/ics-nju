@@ -81,6 +81,8 @@ static int cmd_info(char *args)
         printf("The commad info need a subcommand");
     } else if (strcmp(arg, "r") == 0) {
         isa_reg_display();
+    } else if (strcmp(arg, "w") == 0) {
+        show_wp();
     } else {
         printf("Subcommand is wrong!");
     }
