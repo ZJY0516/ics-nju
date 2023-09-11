@@ -24,6 +24,8 @@ static int is_batch_mode = false;
 
 void init_regex();
 void init_wp_pool();
+void show_wp();
+int add_new_wp(char *s);
 
 /* We use the `readline' library to provide more flexibility to read from stdin.
  */
@@ -124,6 +126,20 @@ static int cmd_p(char *args)
         return 1;
 }
 
+static int cmd_w(char *args)
+{
+    char *arg = strtok(NULL, " ");
+    if (arg == NULL) {
+        printf("The commad info need a subcommand\n");
+        return 1;
+    }
+    if (add_new_wp(arg)) {
+        Log("Error\n");
+        return 1;
+    }
+    return 0;
+}
+
 static int cmd_test_expr(char *args)
 {
     FILE *file = fopen("/home/zjy/code/ics2023/nemu/tools/gen-expr/input", "r");
@@ -173,6 +189,7 @@ static struct {
     {"info", "print state of program", cmd_info},
     {"x", "display memory", cmd_x},
     {"p", "eval", cmd_p},
+    {"w", "set watch point", cmd_w},
     {"test", "test expression", cmd_test_expr},
 };
 
