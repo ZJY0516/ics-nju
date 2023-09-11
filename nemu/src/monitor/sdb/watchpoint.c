@@ -125,3 +125,23 @@ int delete_wp(int n)
     }
     return 0;
 }
+/*Check if the value of the watch point has changed*/
+bool check_wp()
+{
+    WP *ptr = head; // if head == null?
+    word_t new_val;
+    bool expr_success = false;
+    while (ptr) {
+        new_val = expr(ptr->expr, &expr_success);
+        if (expr_success && new_val != ptr->result) {
+            printf("%sid  new_value   old_value   expression%s\n",
+                   ANSI_FG_GREEN, ANSI_NONE);
+            printf("%-4d%-12u%-12u%s\n", ptr->NO, new_val, ptr->result,
+                   ptr->expr);
+            ptr->result = new_val;
+            return true;
+        }
+        ptr = ptr->next;
+    }
+    return false;
+}
