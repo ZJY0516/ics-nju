@@ -252,6 +252,9 @@ static int find_main_op(int p, int q)
 static word_t eval(int p, int q)
 {
     // assume all result are uint32_t
+    // 986761831/(1880862234/(1
+    // obviously it's a bad expression, but it will cause stack-overflow
+    // maybe call eval too much
     if (p > q) {
         Log("Bad expression!\n");
         return 0;
