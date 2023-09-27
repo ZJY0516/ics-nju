@@ -208,7 +208,7 @@ static int op_priority(int op)
 {
     enum {
         or, and, eq_neq, plus_minus, mul_div, deref, neg, reg, hex,
-    }; // priority of operators
+    }; // priority of operators, ugly and not fully tested!
     switch (op) {
     case TK_OR:
         return or ;
