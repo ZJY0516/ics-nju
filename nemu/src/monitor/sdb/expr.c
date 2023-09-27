@@ -285,7 +285,7 @@ static word_t eval(int p, int q)
                 // bad_expression = true;//没搞懂
             }
         } else
-            assert(0);
+            Assert(0, "%d", tokens[p].type);
         return num;
     } else if (check_parentheses(p, q) == true) {
         return eval(p + 1, q - 1);
