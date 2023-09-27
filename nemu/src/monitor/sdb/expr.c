@@ -207,7 +207,7 @@ static bool check_parentheses(int p, int q)
 static int op_priority(int op)
 {
     enum {
-        or, and, eq_neq, plus_minus, mul_div, deref, reg,
+        or, and, eq_neq, plus_minus, mul_div, deref, reg, hex,
     }; // priority of operators
     switch (op) {
     case TK_OR:
@@ -224,6 +224,8 @@ static int op_priority(int op)
         return deref;
     case TK_REG:
         return reg;
+    case TK_HEX:
+        return hex;
     default:
         printf("Undefined operator %d\n", op);
         return -1;
