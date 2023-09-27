@@ -37,6 +37,7 @@ enum {
     TK_REG,   // reg name
     TK_DEREF, // dereference *
     TK_OR,    //||
+    TK_NEG,   // negative number
 
     /* TODO: Add more token types */
 
@@ -168,6 +169,15 @@ static bool make_token(char *e)
             tokens[i].type = TK_DEREF;
         }
     }
+    // process negative number
+    for (i = 0; i < nr_token; i++) {
+        if (tokens[i].type == TK_NEG &&
+            (i == 0 ||
+             (tokens[i - 1].type != TK_NUM && tokens[i - 1].type != TK_HEX &&
+              tokens[i - 1].type != TK_REG && tokens[i - 1].type != TK_KET))) {
+            tokens[i].type = TK_NEG;
+        }
+    }
 
     return true;
 }
@@ -282,6 +292,8 @@ static word_t eval(int p, int q)
     } else if (tokens[p].type == TK_DEREF) {
         word_t addr = eval(p + 1, q);
         return vaddr_read(addr, sizeof(word_t));
+    } else if (tokens[p].type == TK_NEG) {
+        return 0 - eval(p + 1, q);
     } else {
         int main_op_index = find_main_op(p, q);
         word_t val1, val2;
