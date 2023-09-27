@@ -171,7 +171,7 @@ static bool make_token(char *e)
     }
     // process negative number
     for (i = 0; i < nr_token; i++) {
-        if (tokens[i].type == TK_NEG &&
+        if (tokens[i].type == TK_MINUS &&
             (i == 0 ||
              (tokens[i - 1].type != TK_NUM && tokens[i - 1].type != TK_HEX &&
               tokens[i - 1].type != TK_REG && tokens[i - 1].type != TK_KET))) {
