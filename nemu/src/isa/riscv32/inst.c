@@ -216,5 +216,7 @@ static int decode_exec(Decode *s)
 int isa_exec_once(Decode *s)
 {
     s->isa.inst.val = inst_fetch(&s->snpc, 4);
+    void add_inst_trace(word_t pc, word_t inst);
+    IFDEF(CONFIG_ITRACE, add_inst_trace(s->pc, s->isa.inst.val));
     return decode_exec(s);
 }
