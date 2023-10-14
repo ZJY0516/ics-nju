@@ -49,3 +49,16 @@ void show_iringbuf()
     }
 #endif
 }
+
+void show_pread(paddr_t addr, int len)
+{
+#ifdef CONFIG_MTRACE
+    log_write("pread " FMT_PADDR "len=%d\n", addr, len);
+#endif
+}
+void show_pwrite(paddr_t addr, int len)
+{
+#ifdef CONFIG_MTRACE
+    log_write("pwrite " FMT_PADDR "len=%d\n", addr, len);
+#endif
+}
