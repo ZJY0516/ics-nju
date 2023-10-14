@@ -32,6 +32,7 @@ static bool g_print_step = false;
 
 void device_update();
 bool check_wp();
+void show_iringbuf();
 
 static void trace_and_difftest(Decode *_this, vaddr_t dnpc)
 {
@@ -116,6 +117,7 @@ static void statistic()
 
 void assert_fail_msg()
 {
+    show_iringbuf();
     isa_reg_display();
     statistic();
 }
