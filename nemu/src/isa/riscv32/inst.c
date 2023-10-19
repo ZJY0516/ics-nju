@@ -184,7 +184,9 @@ static int decode_exec(Decode *s)
             R(rd) = src1 | src2);
     INSTPAT(
         "0000001 ????? ????? 110 ????? 01100 11", rem, R,
-        if (src2 == 0) { R(rd) = src1; } else { R(rd) = src1 % src2; });
+        if (src2 == 0) { R(rd) = src1; } else {
+            R(rd) = (sword_t)src1 % (sword_t)src2;
+        });
     INSTPAT(
         "0000001 ????? ????? 111 ????? 01100 11", remu, R,
         if (src2 == 0) { R(rd) = src1; } else { R(rd) = src1 % src2; });
