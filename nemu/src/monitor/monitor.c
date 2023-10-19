@@ -109,6 +109,7 @@ static int parse_args(int argc, char *argv[])
             img_file = optarg;
             return 0;
         default:
+            printf("%d\n", o);
             printf("Usage: %s [OPTION...] IMAGE [args]\n\n", argv[0]);
             printf("\t-b,--batch              run with batch mode\n");
             printf("\t-l,--log=FILE           output log to FILE\n");
