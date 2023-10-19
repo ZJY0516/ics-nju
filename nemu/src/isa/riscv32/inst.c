@@ -97,6 +97,8 @@ static void decode_operand(Decode *s, int *rd, word_t *src1, word_t *src2,
     }
 }
 
+void ftrace(paddr_t pc, paddr_t dnpc, bool is_call);
+
 static int decode_exec(Decode *s)
 {
     int rd = 0;
@@ -147,9 +149,21 @@ static int decode_exec(Decode *s)
             R(rd) = src1 / src2;
         }); // same with div?
     INSTPAT("??????? ????? ????? ??? ????? 11011 11", jal, J, R(rd) = s->pc + 4;
+            IFDEF(CONFIG_FTRACE,
+                  {
+                      if (rd == 1)
+                          ftrace(s->pc, s->dnpc, true);
+                  });
             s->dnpc = s->pc + imm);
     INSTPAT("??????? ????? ????? 000 ????? 11001 11", jalr, I,
             word_t tmp = s->pc + 4;
+            IFDEF(CONFIG_FTRACE,
+                  {
+                      if (s->isa.inst.val == 0x00008067)
+                          ftrace(s->pc, s->dnpc, false);
+                      else
+                          ftrace(s->pc, s->dnpc, true);
+                  });
             s->dnpc = (src1 + imm) & ~1; R(rd) = tmp);
     INSTPAT("??????? ????? ????? 100 ????? 00000 11", lbu, I,
             R(rd) = Mr(src1 + imm, 1));
