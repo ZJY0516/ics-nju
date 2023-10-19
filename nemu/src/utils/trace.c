@@ -75,6 +75,7 @@ void show_pwrite(paddr_t addr, int len)
 func func_list[MAX_FUNC_LIST]; // linked list is more suitable
 size_t func_cnt = 0;
 #endif
+#ifdef CONFIG_FTRACE
 static void collect_func(FILE *elf_fp)
 {
 #ifdef CONFIG_FTRACE
@@ -156,6 +157,7 @@ static void collect_func(FILE *elf_fp)
     fclose(elf_fp);
 #endif
 }
+#endif
 int call_depth = 0;
 int ret_depth = 0;
 // int depth = 0;
