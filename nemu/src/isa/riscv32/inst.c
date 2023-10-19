@@ -142,7 +142,9 @@ static int decode_exec(Decode *s)
         if (src1 != src2) { s->dnpc = s->pc + imm; });
     INSTPAT(
         "0000001 ????? ????? 100 ????? 01100 11", div, R,
-        if (src2 == 0) { R(rd) = -1; } else { R(rd) = src1 / src2; });
+        if (src2 == 0) { R(rd) = -1; } else {
+            R(rd) = (sword_t)src1 / (sword_t)src2;
+        });
     INSTPAT(
         "0000001 ????? ????? 101 ????? 01100 11", divu, R,
         if (src2 == 0) { R(rd) = -1; } else {
