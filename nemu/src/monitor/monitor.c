@@ -23,6 +23,7 @@ void init_difftest(char *ref_so_file, long img_size, int port);
 void init_device();
 void init_sdb();
 void init_disasm(const char *triple);
+void init_elf(const char *elf_file);
 
 static void welcome()
 {
@@ -50,6 +51,7 @@ static char *log_file = NULL;
 static char *diff_so_file = NULL;
 static char *img_file = NULL;
 static int difftest_port = 1234;
+static char *elf_file = NULL;
 
 static long load_img()
 {
@@ -82,11 +84,15 @@ static int parse_args(int argc, char *argv[])
         {"diff", required_argument, NULL, 'd'},
         {"port", required_argument, NULL, 'p'},
         {"help", no_argument, NULL, 'h'},
+        {"elf", required_argument, NULL, 'e'},
         {0, 0, NULL, 0},
     };
     int o;
     while ((o = getopt_long(argc, argv, "-bhl:d:p:", table, NULL)) != -1) {
         switch (o) {
+        case 'e':
+            elf_file = optarg;
+            break;
         case 'b':
             sdb_set_batch_mode();
             break;
@@ -122,6 +128,9 @@ void init_monitor(int argc, char *argv[])
 
     /* Parse arguments. */
     parse_args(argc, argv);
+
+    /*Read elf file*/
+    init_elf(elf_file);
 
     /* Set random seed. */
     init_rand();
