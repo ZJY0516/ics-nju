@@ -1,5 +1,6 @@
 #include <common.h>
 #include <elf.h>
+#include <device/map.h>
 
 #define MAX_I_RING_BUF_LEN 16
 #define MAX_FUNC_LIST 10240
@@ -191,7 +192,7 @@ void ftrace(paddr_t pc, paddr_t dnpc, bool is_call)
 }
 void init_elf(const char *elf_file)
 {
-#ifdef CONFIG_TRACE
+#ifdef CONFIG_FTRACE
     if (elf_file != NULL) {
         FILE *elf = fopen(elf_file, "rb");
         Assert(elf, "Can not open '%s'", elf_file);
@@ -199,5 +200,21 @@ void init_elf(const char *elf_file)
     } else {
         printf("elf file is null\n");
     }
+#endif
+}
+
+void show_dread(paddr_t addr, int len, IOMap *map)
+{
+#ifdef CONFIG_DTRACE
+    log_write("device trace: read %10s at " FMT_PADDR ", len=%d\n", map->name,
+              addr, len);
+#endif
+}
+void show_dwrite(paddr_t addr, int len, word_t data, IOMap *map)
+{
+#ifdef CONFIG_DTRACE
+    log_write("device trace: write %10s at " FMT_PADDR
+              ", len=%d, data=" FMT_WORD "\n",
+              map->name, addr, len, data);
 #endif
 }
