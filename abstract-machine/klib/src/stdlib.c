@@ -28,7 +28,7 @@ int atoi(const char *nptr)
     }
     return x;
 }
-static char *addr = NULL;
+__attribute__((unused)) static char *addr = NULL;
 void *malloc(size_t size)
 {
     // On native, malloc() will be called during initializaion of C runtime.
