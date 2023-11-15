@@ -19,7 +19,6 @@
 
 bool isa_difftest_checkregs(CPU_state *ref_r, vaddr_t pc)
 {
-    return false;
     int reg_num = ARRLEN(cpu.gpr);
     int i;
     for (i = 0; i < reg_num; i++) {
