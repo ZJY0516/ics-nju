@@ -98,11 +98,32 @@ static void decode_operand(Decode *s, int *rd, word_t *src1, word_t *src2,
 }
 
 void ftrace(paddr_t pc, paddr_t dnpc, bool is_call);
+word_t *choose_csr(word_t imm)
+{
+    switch (imm) {
+    case 0x305:
+        return &cpu.mtvec;
+        break;
+    case 0x300:
+        return &cpu.mstatus;
+        break;
+    case 0x341:
+        return &cpu.mepc;
+        break;
+    case 0x342:
+        return &cpu.mcause;
+        break;
+    default:
+        assert(0);
+        break;
+    }
+}
 
 static int decode_exec(Decode *s)
 {
     int rd = 0;
     word_t src1 = 0, src2 = 0, imm = 0;
+    word_t *csr;
     s->dnpc = s->snpc;
 
 #define INSTPAT_INST(s) ((s)->isa.inst.val)
@@ -140,6 +161,12 @@ static int decode_exec(Decode *s)
     INSTPAT(
         "??????? ????? ????? 001 ????? 11000 11", bne, B,
         if (src1 != src2) { s->dnpc = s->pc + imm; });
+    INSTPAT("??????? ????? ????? 010 ????? 11100 11", csrrs, I,
+            csr = choose_csr(imm);
+            word_t t = *csr; *csr = t | src1; R(rd) = t;);
+    INSTPAT("??????? ????? ????? 001 ????? 11100 11", csrrw, I,
+            csr = choose_csr(imm);
+            word_t t = *csr; *csr = src1; R(rd) = t;);
     INSTPAT(
         "0000001 ????? ????? 100 ????? 01100 11", div, R,
         if (src2 == 0) { R(rd) = -1; } else {
