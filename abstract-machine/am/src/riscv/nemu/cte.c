@@ -14,7 +14,7 @@ Context *__am_irq_handle(Context *c)
             break;
         default:
             // ev.event = EVENT_ERROR;
-            ev.event = EVENT_SYSCALL; // so just distiniguish yield and syscall?
+            ev.event = EVENT_YIELD; // so just distiniguish yield and syscall?
             break;
         }
 
