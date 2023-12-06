@@ -25,6 +25,8 @@ bool isa_difftest_checkregs(CPU_state *ref_r, vaddr_t pc)
         if (ref_r->gpr[i] != cpu.gpr[i]) {
             Log("reg %s not equal, ref value is %u, duc value is %u",
                 reg_name(i), ref_r->gpr[i], cpu.gpr[i]);
+            Log("mstatus: %u\tmcause: %u\tmtvec: %u\tmepc: %u\n", cpu.mstatus,
+                cpu.mcause, cpu.mtvec, cpu.mepc);
             return false;
         }
     }
