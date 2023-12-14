@@ -27,9 +27,13 @@ static uintptr_t loader(PCB *pcb, const char *filename)
     fs_read(fd, programHeaders, sizeof(Elf_Phdr) * numSegments);
     for (int i = 0; i < numSegments; i++) {
         if (programHeaders[i].p_type == PT_LOAD) {
-            ramdisk_read((void *)programHeaders[i].p_vaddr,
-                         programHeaders[i].p_offset,
-                         programHeaders[i].p_filesz); // file size or mem size?
+            // ramdisk_read((void *)programHeaders[i].p_vaddr,
+            //              programHeaders[i].p_offset,
+            //              programHeaders[i].p_filesz);
+            // //file size or memsize?
+            fs_lseek(fd, programHeaders[i].p_offset, SEEK_SET);
+            fs_read(fd, (void *)programHeaders[i].p_vaddr,
+                    programHeaders[i].p_filesz);
             memset((void *)(programHeaders[i].p_vaddr +
                             programHeaders[i].p_filesz),
                    0, programHeaders[i].p_memsz - programHeaders[i].p_filesz);
