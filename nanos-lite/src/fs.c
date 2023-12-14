@@ -91,7 +91,7 @@ size_t fs_lseek(int fd, size_t offset, int whence)
     default:
         return -1;
     }
-    assert(file_table[fd].open_offset < file_table[fd].size);
+    // assert(file_table[fd].open_offset < file_table[fd].size);
     return file_table[fd].open_offset;
 }
 
