@@ -179,6 +179,7 @@ static int decode_exec(Decode *s)
         }); // same with div?
     INSTPAT("0000000 00000 00000 000 00000 11100 11", ecall, I, bool tmp;
             word_t NO = isa_reg_str2val("a7", &tmp);
+            IFDEF(CONFIG_ETRACE, Log("exception! mcause=%u\n", NO));
             s->dnpc = isa_raise_intr(NO, s->pc););
     INSTPAT("??????? ????? ????? ??? ????? 11011 11", jal, J, R(rd) = s->pc + 4;
             IFDEF(CONFIG_FTRACE,
