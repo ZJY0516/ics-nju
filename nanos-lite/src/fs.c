@@ -2,11 +2,6 @@
 
 typedef size_t (*ReadFn)(void *buf, size_t offset, size_t len);
 typedef size_t (*WriteFn)(const void *buf, size_t offset, size_t len);
-int fs_open(const char *pathname, int flags, int mode);
-size_t fs_read(int fd, void *buf, size_t len);
-size_t fs_write(int fd, const void *buf, size_t len);
-size_t fs_lseek(int fd, size_t offset, int whence);
-int fs_close(int fd);
 
 extern size_t ramdisk_read(void *buf, size_t offset, size_t len);
 extern size_t ramdisk_write(const void *buf, size_t offset, size_t len);
@@ -77,6 +72,25 @@ size_t fs_write(int fd, const void *buf, size_t len)
 }
 
 int fs_close(int fd) { return 0; }
+
+size_t fs_lseek(int fd, size_t offset, int whence)
+{
+    assert(fd < NR_FILE);
+    switch (whence) {
+    case SEEK_SET:
+        file_table[fd].open_offset = offset;
+        break;
+    case SEEK_CUR:
+        file_table[fd].open_offset += offset;
+        break;
+    case SEEK_END:
+        file_table[fd].open_offset = file_table[fd].size + offset;
+        break;
+    default:
+        return -1;
+    }
+    return file_table[fd].open_offset;
+}
 
 void init_fs()
 {

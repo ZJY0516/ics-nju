@@ -1,5 +1,6 @@
 #include <proc.h>
 #include <elf.h>
+#include <fs.h>
 
 #ifdef __LP64__
 #define Elf_Ehdr Elf64_Ehdr
@@ -13,13 +14,17 @@ extern size_t ramdisk_read(void *buf, size_t offset, size_t len);
 static uintptr_t loader(PCB *pcb, const char *filename)
 {
     Elf_Ehdr elf_header;
-    ramdisk_read(&elf_header, 0, sizeof(Elf_Ehdr));
+    int fd = fs_open(filename, 0, 0);
+    fs_read(fd, &elf_header, sizeof(Elf_Ehdr));
+    // ramdisk_read(&elf_header, 0, sizeof(Elf_Ehdr));
     assert((*(uint32_t *)elf_header.e_ident == 0x464c457f));
     int numSegments = elf_header.e_phnum;
     Elf_Phdr *programHeaders =
         (Elf_Phdr *)malloc(sizeof(Elf_Phdr) * numSegments);
-    ramdisk_read(programHeaders, elf_header.e_phoff,
-                 sizeof(Elf_Phdr) * numSegments);
+    // ramdisk_read(programHeaders, elf_header.e_phoff,
+    //              sizeof(Elf_Phdr) * numSegments);
+    fs_lseek(fd, elf_header.e_phoff, SEEK_SET);
+    fs_read(fd, programHeaders, sizeof(Elf_Phdr) * numSegments);
     for (int i = 0; i < numSegments; i++) {
         if (programHeaders[i].p_type == PT_LOAD) {
             ramdisk_read((void *)programHeaders[i].p_vaddr,
