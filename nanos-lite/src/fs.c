@@ -8,6 +8,17 @@ size_t fs_write(int fd, const void *buf, size_t len);
 size_t fs_lseek(int fd, size_t offset, int whence);
 int fs_close(int fd);
 
+extern size_t ramdisk_read(void *buf, size_t offset, size_t len);
+extern size_t ramdisk_write(const void *buf, size_t offset, size_t len);
+static size_t file_read(void *buf, size_t offset, size_t len)
+{
+    return ramdisk_read(buf, offset, len);
+}
+static size_t file_write(const void *buf, size_t offset, size_t len)
+{
+    return ramdisk_write(buf, offset, len);
+}
+
 typedef struct {
     char *name;
     size_t size;
@@ -51,7 +62,30 @@ int fs_open(const char *pathname, int flags, int mode)
     assert(0);
 }
 
+size_t fs_read(int fd, void *buf, size_t len)
+{
+    size_t offset = file_table[fd].disk_offset + file_table[fd].open_offset;
+    file_table[fd].open_offset += len;
+    return file_table[fd].read(buf, offset, len);
+}
+
+size_t fs_write(int fd, const void *buf, size_t len)
+{
+    size_t offset = file_table[fd].disk_offset + file_table[fd].open_offset;
+    file_table[fd].open_offset += len;
+    return file_table[fd].write(buf, offset, len);
+}
+
+int fs_close(int fd) { return 0; }
+
 void init_fs()
 {
     // TODO: initialize the size of /dev/fb
+    for (int i = 0; i < NR_FILE; i++) {
+        if (file_table[i].read == NULL)
+            file_table[i].read = file_read;
+        if (file_table[i].write == NULL)
+            file_table[i].write = file_write;
+        file_table[i].open_offset = 0;
+    }
 }
