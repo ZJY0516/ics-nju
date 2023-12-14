@@ -20,14 +20,14 @@ void do_syscall(Context *c)
         c->GPRx = 0;
         break;
     case SYS_write:
-        if (call_para[0] == 1) {
-            for (int i = 0; i < call_para[2]; i++) {
-                putch(*(char *)(call_para[1] + i));
-            }
-        }
-        c->GPRx = call_para[2];
-        // c->GPRx =
-        //     fs_write(call_para[0], (const void *)call_para[1], call_para[2]);
+        // if (call_para[0] == 1) {
+        //     for (int i = 0; i < call_para[2]; i++) {
+        //         putch(*(char *)(call_para[1] + i));
+        //     }
+        // }
+        // c->GPRx = call_para[2];
+        c->GPRx =
+            fs_write(call_para[0], (const void *)call_para[1], call_para[2]);
         break;
     case SYS_brk:
         c->GPRx = 0;
