@@ -42,6 +42,9 @@ void do_syscall(Context *c)
     case SYS_close:
         c->GPRx = fs_close((int)call_para[0]);
         break;
+    case SYS_read:
+        c->GPRx = fs_read(call_para[0], (void *)call_para[1], call_para[2]);
+        break;
     default:
         panic("Unhandled syscall ID = %d", a[0]);
     }
