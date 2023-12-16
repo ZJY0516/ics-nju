@@ -20,7 +20,7 @@ void do_syscall(Context *c)
         c->GPRx = 0;
         break;
     case SYS_write:
-        if (call_para[0] == 1) {
+        if (call_para[0] == 1 || call_para[0] == 2) {
             for (int i = 0; i < call_para[2]; i++) {
                 putch(*(char *)(call_para[1] + i));
             }
