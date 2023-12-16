@@ -54,6 +54,7 @@ void do_syscall(Context *c)
         tv->tv_usec = (int32_t)uptime.us;
         tv->tv_sec = (int32_t)uptime.us / 1000000;
         c->GPRx = 0;
+        break;
     default:
         panic("Unhandled syscall ID = %d", a[0]);
     }
