@@ -1,4 +1,5 @@
 #include <common.h>
+#include <sys/time.h>
 #include "syscall.h"
 #include <fs.h>
 #include "../../nemu/include/generated/autoconf.h"
@@ -46,6 +47,13 @@ void do_syscall(Context *c)
     case SYS_read:
         c->GPRx = fs_read(call_para[0], (void *)call_para[1], call_para[2]);
         break;
+    case SYS_gettimeofday:
+        struct timeval *tv = (struct timeval *)call_para[0];
+        AM_TIMER_UPTIME_T uptime;
+        ioe_read(AM_TIMER_UPTIME, &uptime);
+        tv->tv_usec = (int32_t)uptime.us;
+        tv->tv_sec = (int32_t)uptime.us / 1000000;
+        c->GPRx = 0;
     default:
         panic("Unhandled syscall ID = %d", a[0]);
     }
