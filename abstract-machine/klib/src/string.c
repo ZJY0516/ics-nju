@@ -112,10 +112,10 @@ void *memmove(void *dst, const void *src, size_t n)
 
 void *memcpy(void *out, const void *in, size_t n)
 {
-    char *dst = out;
-    const char *src = in;
-    while (n--) {
-        *dst++ = *src++;
+    assert(in && out);
+    size_t i;
+    for (i = 0; i < n; i++) {
+        *((char *)out + i) = *((char *)in + i);
     }
     return out;
 }
