@@ -57,5 +57,4 @@ void init_device()
     Log("Initializing devices...");
     ioe_init();
     ioe_read(AM_GPU_CONFIG, &gpu_config);
-    printf("111111\n");
 }
