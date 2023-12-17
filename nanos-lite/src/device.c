@@ -57,4 +57,5 @@ void init_device()
     Log("Initializing devices...");
     ioe_init();
     ioe_read(AM_GPU_CONFIG, &gpu_config);
+    printf("ioe: width=%d, height=%d\n", gpu_config.width, gpu_config.height);
 }
