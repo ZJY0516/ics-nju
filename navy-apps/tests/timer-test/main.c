@@ -7,6 +7,7 @@
 int main()
 {
 #ifdef NDL
+    NDL_Init(0);
     uint32_t msec = 0;
 #elif
     struct timeval tv;
