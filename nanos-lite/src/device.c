@@ -11,6 +11,9 @@
 static const char *keyname[256]
     __attribute__((used)) = {[AM_KEY_NONE] = "NONE", AM_KEYS(NAME)};
 
+static AM_GPU_CONFIG_T gpu_config;
+static AM_GPU_FBDRAW_T gpu_fbdraw __attribute__((unused));
+
 size_t serial_write(const void *buf, size_t offset, size_t len)
 {
     for (size_t i = 0; i < len; i++) {
@@ -32,14 +35,21 @@ size_t events_read(void *buf, size_t offset, size_t len)
     } else {
         sprintf(buf, "ku %s\n", keyname[event.keycode]);
     }
-    snprintf(buf, 3, "1234");
-    // shou use snprintf. TODO
+    // snprintf(buf, 3, "1234");
+    //  should use snprintf. TODO
     size_t re = strlen(buf);
     assert(re <= len);
     return re;
 }
 
-size_t dispinfo_read(void *buf, size_t offset, size_t len) { return 0; }
+size_t dispinfo_read(void *buf, size_t offset, size_t len)
+{
+    ioe_read(AM_GPU_CONFIG, &gpu_config);
+    int width = gpu_config.width, height = gpu_config.height;
+    sprintf(buf, "WIDTH:%d\nHEIGHT:%d\n", width, height);
+    // len
+    return strlen(buf);
+}
 
 size_t fb_write(const void *buf, size_t offset, size_t len) { return 0; }
 

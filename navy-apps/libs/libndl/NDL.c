@@ -11,6 +11,10 @@ static int fbdev = -1;
 static int screen_w = 0, screen_h = 0;
 static uint32_t init_time = 0;
 static int event_id = -1; // keyboard event
+static struct dispinfo {
+    int width;
+    int height;
+} dispinfo_t;
 
 static uint32_t get_milliseconds()
 {
@@ -25,6 +29,11 @@ int NDL_PollEvent(char *buf, int len) { return read(event_id, buf, len); }
 
 void NDL_OpenCanvas(int *w, int *h)
 {
+    if (*w == 0 && *h == 0) {
+        *w = dispinfo_t.width;
+        *h = dispinfo_t.height;
+    }
+    printf("w=%d, h=%d", *w, *h);
     if (getenv("NWM_APP")) {
         int fbctl = 4;
         fbdev = 5;
@@ -64,6 +73,8 @@ int NDL_Init(uint32_t flags)
     }
     init_time = get_milliseconds();
     event_id = open("/dev/events", 0, 0);
+    FILE *fp = fopen("/proc/dispinfo", "r");
+    fscanf(fp, "WIDTH:%d\nHEIGHT:%d\n", &dispinfo_t.width, &dispinfo_t.height);
     return 0;
 }
 
