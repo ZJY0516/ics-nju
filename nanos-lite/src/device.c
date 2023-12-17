@@ -47,6 +47,7 @@ size_t dispinfo_read(void *buf, size_t offset, size_t len)
     int width = gpu_config.width, height = gpu_config.height;
     sprintf(buf, "WIDTH:%d\nHEIGHT:%d\n", width, height);
     // len
+    printf("%s", (char *)buf);
     return strlen(buf);
 }
 
