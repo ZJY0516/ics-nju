@@ -4,11 +4,13 @@
 #include <string.h>
 #include <unistd.h>
 #include <sys/time.h>
+#include <fcntl.h>
 
 static int evtdev = -1;
 static int fbdev = -1;
 static int screen_w = 0, screen_h = 0;
 static uint32_t init_time = 0;
+static int event_id = -1; // keyboard event
 
 static uint32_t get_milliseconds()
 {
@@ -19,7 +21,7 @@ static uint32_t get_milliseconds()
 
 uint32_t NDL_GetTicks() { return get_milliseconds() - init_time; }
 
-int NDL_PollEvent(char *buf, int len) { return 0; }
+int NDL_PollEvent(char *buf, int len) { return read(event_id, buf, len); }
 
 void NDL_OpenCanvas(int *w, int *h)
 {
@@ -61,7 +63,12 @@ int NDL_Init(uint32_t flags)
         evtdev = 3;
     }
     init_time = get_milliseconds();
+    event_id = open("/dev/events", 0, 0);
     return 0;
 }
 
-void NDL_Quit() { init_time = 0; }
+void NDL_Quit()
+{
+    init_time = 0;
+    close(event_id);
+}
