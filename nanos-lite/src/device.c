@@ -32,7 +32,7 @@ size_t events_read(void *buf, size_t offset, size_t len)
     } else {
         sprintf(buf, "ku %s\n", keyname[event.keycode]);
     }
-    printf("%u\n", -1);
+    printf("%u\n", 1);
     // shou use snprintf. TODO
     size_t re = strlen(buf);
     assert(re <= len);
