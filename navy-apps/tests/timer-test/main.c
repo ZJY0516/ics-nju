@@ -8,7 +8,7 @@ int main()
     while (1) {
         gettimeofday(&tv, NULL);
         if (tv.tv_sec > sec) {
-            printf("+1s\n");
+            printf("+1s  %d\n", sizeof(tv.tv_sec));
             sec = tv.tv_sec;
         }
     }

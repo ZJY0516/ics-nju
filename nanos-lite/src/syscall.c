@@ -53,7 +53,7 @@ void do_syscall(Context *c)
         ioe_read(AM_TIMER_UPTIME, &uptime);
         tv->tv_usec = uptime.us % 1000000;
         tv->tv_sec = uptime.us / 1000000;
-        printf("size of tv->sec %d\n", sizeof(tv->tv_sec));
+        // printf("size of tv->sec %d\n", sizeof(tv->tv_sec));
         c->GPRx = 0;
         break;
     default:
