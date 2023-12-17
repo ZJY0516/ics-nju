@@ -75,6 +75,7 @@ int NDL_Init(uint32_t flags)
     event_id = open("/dev/events", 0, 0);
     FILE *fp = fopen("/proc/dispinfo", "r");
     fscanf(fp, "WIDTH:%d\nHEIGHT:%d\n", &dispinfo_t.width, &dispinfo_t.height);
+    dispinfo_t.height = 300;
     printf("width=%d, height=%d\n", dispinfo_t.width, dispinfo_t.height);
     return 0;
 }
