@@ -51,8 +51,8 @@ void do_syscall(Context *c)
         struct timeval *tv = (struct timeval *)call_para[0];
         AM_TIMER_UPTIME_T uptime;
         ioe_read(AM_TIMER_UPTIME, &uptime);
-        tv->tv_usec = uptime.us % 1000000;
-        tv->tv_sec = uptime.us / 1000000;
+        tv->tv_usec = (int32_t)uptime.us % 1000000;
+        tv->tv_sec = (int32_t)uptime.us / 1000000;
         // printf("size of tv->sec %d\n", sizeof(tv->tv_sec));
         c->GPRx = 0;
         break;
