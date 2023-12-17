@@ -29,6 +29,7 @@ int NDL_PollEvent(char *buf, int len) { return read(event_id, buf, len); }
 
 void NDL_OpenCanvas(int *w, int *h)
 {
+    printf("111111\n");
     if (*w == 0 && *h == 0) {
         *w = dispinfo_t.width;
         *h = dispinfo_t.height;
@@ -75,7 +76,6 @@ int NDL_Init(uint32_t flags)
     event_id = open("/dev/events", 0, 0);
     FILE *fp = fopen("/proc/dispinfo", "r");
     fscanf(fp, "WIDTH:%d\nHEIGHT:%d\n", &dispinfo_t.width, &dispinfo_t.height);
-    printf("111111\n");
     return 0;
 }
 
