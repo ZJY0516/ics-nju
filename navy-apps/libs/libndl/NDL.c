@@ -29,7 +29,6 @@ int NDL_PollEvent(char *buf, int len) { return read(event_id, buf, len); }
 
 void NDL_OpenCanvas(int *w, int *h)
 {
-    printf("111111\n");
     if (*w == 0 && *h == 0) {
         *w = dispinfo_t.width;
         *h = dispinfo_t.height;
