@@ -23,15 +23,19 @@ size_t events_read(void *buf, size_t offset, size_t len)
 {
     AM_INPUT_KEYBRD_T event;
     ioe_read(AM_INPUT_KEYBRD, &event);
-    if (event.keycode == AM_KEY_NONE)
+    if (event.keycode == AM_KEY_NONE) {
+        *(char *)buf = '\0';
         return 0;
+    }
     if (event.keydown) {
         sprintf(buf, "kd %s\n", keyname[event.keycode]);
     } else {
         sprintf(buf, "ku %s\n", keyname[event.keycode]);
     }
-
-    return strlen(buf);
+    // shou use snprintf. TODO
+    size_t re = strlen(buf);
+    assert(re <= len);
+    return re;
 }
 
 size_t dispinfo_read(void *buf, size_t offset, size_t len) { return 0; }
