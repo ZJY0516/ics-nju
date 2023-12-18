@@ -65,7 +65,7 @@ void *malloc(size_t size)
     uint8_t *old = mem_heap.ptr;
     mem_heap.ptr += size;
     assert(mem_heap.ptr <= mem_heap.end);
-    return (void *)old;
+    return (void *)old + 0x80000000;
 #endif
     return NULL;
 }
