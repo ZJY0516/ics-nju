@@ -62,7 +62,6 @@ void *malloc(size_t size)
     char *ret = addr;
     addr += aligned_size;
     printf("malloc: %u\n", ret);
-    ret += 1000;
     return ret;
 
     // printf("malloc: %u   size: %u\n", mem_heap.ptr, size);
