@@ -79,15 +79,20 @@ int _write(int fd, void *buf, size_t count)
 }
 
 extern char end;
-static char *new_end = &end;
+static intptr_t ptr_brk = (intptr_t)&end;
 void *_sbrk(intptr_t increment)
 {
-    // printf("test");
-    if (_syscall_(SYS_brk, increment, 0, 0) == 0) {
-        new_end += increment;
-        return (void *)new_end;
-    }
-    return (void *)-1;
+    void *old = (void *)ptr_brk;
+    ptr_brk += increment;
+    // if (_syscall_(SYS_brk, increment, 0, 0) == 0) {
+    //     new_end += increment;
+    //     return (void *)new_end;
+    // }
+    // return (void *)-1;
+    int ret = _syscall_((intptr_t)SYS_brk, ptr_brk, 0, 0);
+    if (ret != 0)
+        return (void *)-1;
+    return old;
 }
 
 int _read(int fd, void *buf, size_t count)

@@ -3,6 +3,7 @@
 #include "syscall.h"
 #include <fs.h>
 #include "../../nemu/include/generated/autoconf.h"
+static intptr_t heap_brk;
 void do_syscall(Context *c)
 {
     uintptr_t a[4];
@@ -32,6 +33,7 @@ void do_syscall(Context *c)
             fs_write(call_para[0], (const void *)call_para[1], call_para[2]);
         break;
     case SYS_brk:
+        heap_brk = (intptr_t)call_para[0];
         c->GPRx = 0;
         break;
     case SYS_open:
