@@ -17,6 +17,16 @@ static struct dispinfo {
     int height;
 } dispinfo_t;
 
+void get_dispinfo()
+{
+    int fd_dis = open("/proc/dispinfo", 0, 0);
+    char tmp[30];
+    read(fd_dis, (void *)tmp, 30);
+    sscanf(tmp, "WIDTH:%d\nHEIGHT:%d\n", &dispinfo_t.width, &dispinfo_t.height);
+    // dispinfo_t.height = 300;
+    printf("width=%d, height=%d\n", dispinfo_t.width, dispinfo_t.height);
+    assert(dispinfo_t.width && dispinfo_t.height);
+}
 static uint32_t get_milliseconds()
 {
     struct timeval tv;
@@ -77,13 +87,7 @@ int NDL_Init(uint32_t flags)
     // FILE *fp = fopen("/proc/dispinfo", "r");
     // fscanf(fp, "WIDTH:%d\nHEIGHT:%d\n", &dispinfo_t.width,
     // &dispinfo_t.height);
-    int fd_dis = open("/proc/dispinfo", 0, 0);
-    char tmp[30];
-    read(fd_dis, (void *)tmp, 30);
-    sscanf(tmp, "WIDTH:%d\nHEIGHT:%d\n", &dispinfo_t.width, &dispinfo_t.height);
-    // dispinfo_t.height = 300;
-    printf("width=%d, height=%d\n", dispinfo_t.width, dispinfo_t.height);
-    assert(dispinfo_t.width && dispinfo_t.height);
+    get_dispinfo();
     return 0;
 }
 
