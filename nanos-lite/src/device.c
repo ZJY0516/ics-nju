@@ -47,7 +47,7 @@ size_t dispinfo_read(void *buf, size_t offset, size_t len)
     int width = gpu_config.width, height = gpu_config.height;
     sprintf(buf, "WIDTH:%d\nHEIGHT:%d\n", width, height);
     // len
-    printf("%s", (char *)buf);
+    // printf("%s", (char *)buf);
     return strlen(buf);
 }
 
@@ -58,5 +58,6 @@ void init_device()
     Log("Initializing devices...");
     ioe_init();
     ioe_read(AM_GPU_CONFIG, &gpu_config);
-    printf("ioe: width=%d, height=%d\n", gpu_config.width, gpu_config.height);
+    // printf("ioe: width=%d, height=%d\n", gpu_config.width,
+    // gpu_config.height);
 }
