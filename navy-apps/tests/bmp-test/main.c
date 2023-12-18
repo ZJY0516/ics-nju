@@ -14,6 +14,7 @@ int main()
     NDL_OpenCanvas(&w, &h);
     printf("2222222\n");
     NDL_DrawRect(bmp, 0, 0, w, h);
+    printf("333333");
     free(bmp);
     NDL_Quit();
     printf("Test ends! Spinning...\n");
