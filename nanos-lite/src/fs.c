@@ -69,7 +69,7 @@ size_t fs_read(int fd, void *buf, size_t len)
                           ? (file_table[fd].size - file_table[fd].open_offset)
                           : len;
     file_table[fd].open_offset += real_len;
-    // assert(file_table[fd].open_offset <= file_table[fd].size);
+    assert(file_table[fd].open_offset <= file_table[fd].size);
     return file_table[fd].read(buf, offset, real_len);
 }
 
@@ -80,7 +80,7 @@ size_t fs_write(int fd, const void *buf, size_t len)
                           ? (file_table[fd].size - file_table[fd].open_offset)
                           : len;
     file_table[fd].open_offset += real_len;
-    // assert(file_table[fd].open_offset < file_table[fd].size);
+    assert(file_table[fd].open_offset <= file_table[fd].size);
     return file_table[fd].write(buf, offset, real_len);
 }
 
