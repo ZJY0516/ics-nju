@@ -30,7 +30,7 @@ int atoi(const char *nptr)
 }
 // static char *addr = NULL;
 #define HEAP_SIZE 1000000
-static uint8_t mem[HEAP_SIZE] = {0};
+static uint8_t mem[HEAP_SIZE];
 typedef struct heap {
     uint8_t *start;
     uint8_t *end;
