@@ -3,7 +3,7 @@
 
 int main()
 {
-    uint32_t *p = malloc(50 * sizeof(uint32_t));
+    uint32_t *p = malloc(128 * 128 * sizeof(uint32_t));
     printf("addr:%p\n", p);
     printf("addr:%p\n", p + 1);
     printf("addr:%p\n", p + 2);

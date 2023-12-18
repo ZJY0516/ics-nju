@@ -61,6 +61,8 @@ void *malloc(size_t size)
     // addr += aligned_size;
     // printf("malloc: %u\n", ret);
     // return ret;
+    extern Area heap;
+    printf("heap start: %u", heap.start);
     printf("malloc: %u   size: %u\n", mem_heap.ptr, size);
     uint8_t *old = mem_heap.ptr;
     mem_heap.ptr += size;
