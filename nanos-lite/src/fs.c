@@ -66,7 +66,7 @@ size_t fs_read(int fd, void *buf, size_t len)
 {
     size_t offset = file_table[fd].disk_offset + file_table[fd].open_offset;
     file_table[fd].open_offset += len;
-    // assert(file_table[fd].open_offset < file_table[fd].size);
+    assert(file_table[fd].open_offset <= file_table[fd].size);
     return file_table[fd].read(buf, offset, len);
 }
 
