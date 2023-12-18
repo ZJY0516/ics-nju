@@ -74,8 +74,13 @@ int NDL_Init(uint32_t flags)
     }
     init_time = get_milliseconds();
     event_id = open("/dev/events", 0, 0);
-    FILE *fp = fopen("/proc/dispinfo", "r");
-    fscanf(fp, "WIDTH:%d\nHEIGHT:%d\n", &dispinfo_t.width, &dispinfo_t.height);
+    // FILE *fp = fopen("/proc/dispinfo", "r");
+    // fscanf(fp, "WIDTH:%d\nHEIGHT:%d\n", &dispinfo_t.width,
+    // &dispinfo_t.height);
+    int fd_dis = open("/proc/dispinfo", 0, 0);
+    char tmp[30];
+    read(fd_dis, (void *)tmp, 30);
+    sscanf(tmp, "WIDTH:%d\nHEIGHT:%d\n", &dispinfo_t.width, &dispinfo_t.height);
     // dispinfo_t.height = 300;
     printf("width=%d, height=%d\n", dispinfo_t.width, dispinfo_t.height);
     assert(dispinfo_t.width && dispinfo_t.height);
