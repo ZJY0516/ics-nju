@@ -24,7 +24,7 @@ void *BMP_Load(const char *filename, int *width, int *height)
     FILE *fp = fopen(filename, "r");
     if (!fp)
         return NULL;
-    printf("111111111111111\n");
+    // printf("111111111111111\n");
     struct BitmapHeader hdr;
     assert(sizeof(hdr) == 54);
     assert(1 == fread(&hdr, sizeof(struct BitmapHeader), 1, fp));
@@ -36,13 +36,13 @@ void *BMP_Load(const char *filename, int *width, int *height)
     int w = hdr.width;
     int h = hdr.height;
     uint32_t *pixels = malloc(w * h * sizeof(uint32_t));
-    printf("222222222222222222222222\n");
+    // printf("222222222222222222222222\n");
     int line_off = (w * 3 + 3) & ~0x3;
     for (int i = 0; i < h; i++) {
         fseek(fp, hdr.offset + (h - 1 - i) * line_off, SEEK_SET);
-        printf("44444444444444444444444444444444\n");
+        // printf("44444444444444444444444444444444\n");
         int nread = fread(&pixels[w * i], 3, w, fp);
-        printf("55555555555555555555555\n");
+        // printf("55555555555555555555555\n");
         for (int j = w - 1; j >= 0; j--) {
             uint8_t b = *(((uint8_t *)&pixels[w * i]) + 3 * j);
             uint8_t g = *(((uint8_t *)&pixels[w * i]) + 3 * j + 1);
@@ -50,7 +50,7 @@ void *BMP_Load(const char *filename, int *width, int *height)
             pixels[w * i + j] = (r << 16) | (g << 8) | b;
         }
     }
-    printf("3333333333333333333333333333\n");
+    // printf("3333333333333333333333333333\n");
 
     fclose(fp);
     if (width)
