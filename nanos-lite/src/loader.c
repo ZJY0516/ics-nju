@@ -33,7 +33,7 @@ static uintptr_t loader(PCB *pcb, const char *filename)
             // //file size or memsize?
             fs_lseek(fd, programHeaders[i].p_offset, SEEK_SET);
             fs_read(fd, (void *)programHeaders[i].p_vaddr,
-                    programHeaders[i].p_memsz);
+                    programHeaders[i].p_filesz);
             memset((void *)(programHeaders[i].p_vaddr +
                             programHeaders[i].p_filesz),
                    0, programHeaders[i].p_memsz - programHeaders[i].p_filesz);
