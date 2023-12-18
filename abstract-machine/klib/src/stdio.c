@@ -36,6 +36,21 @@ static char *itoa(int num, char *s, int base)
     }
     return s;
 }
+void utoa(unsigned int num, char *s, int base)
+{
+    int i = 0;
+    do {
+        s[i++] = "0123456789abcdef"[num % base];
+        num /= base;
+    } while (num);
+    s[i] = '\0';
+    char temp;
+    for (int j = 0; j <= (i - 1) / 2; j++) {
+        temp = s[j];
+        s[j] = s[i - 1 - j];
+        s[i - 1 - j] = temp;
+    }
+}
 static char *append(char *s, char *tmp)
 {
     /*append tmp to s and return the pointer to the last character*/
@@ -61,7 +76,7 @@ int printf(const char *fmt, ...)
 
 int vsprintf(char *out, const char *fmt, va_list ap)
 { // more format should be supported
-    int num;
+    int num, unum;
     char anything[256];
     char *tmp = anything;
     char *s = out;
@@ -73,6 +88,11 @@ int vsprintf(char *out, const char *fmt, va_list ap)
             case 'd':
                 num = va_arg(ap, int);
                 itoa(num, tmp, 10);
+                s = append(s, tmp);
+                break;
+            case 'u':
+                unum = va_arg(ap, unsigned int);
+                utoa(unum, tmp, 10);
                 s = append(s, tmp);
                 break;
             case 's':
