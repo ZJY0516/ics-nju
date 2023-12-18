@@ -116,6 +116,7 @@ void *memcpy(void *out, const void *in, size_t n)
     size_t i;
     for (i = 0; i < n; i++) {
         *((char *)out + i) = *((char *)in + i);
+        printf("addr: %d\n", (int)in);
     }
     return out;
 }
