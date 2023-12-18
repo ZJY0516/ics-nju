@@ -61,6 +61,7 @@ void *malloc(size_t size)
     // addr += aligned_size;
     // printf("malloc: %u\n", ret);
     // return ret;
+    printf("malloc: %u", mem_heap.ptr);
     uint8_t *old = mem_heap.ptr;
     mem_heap.ptr += size;
     assert(mem_heap.ptr <= mem_heap.end);
