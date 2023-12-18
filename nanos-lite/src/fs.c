@@ -8,6 +8,7 @@ extern size_t ramdisk_write(const void *buf, size_t offset, size_t len);
 extern size_t serial_write(const void *buf, size_t offset, size_t len);
 extern size_t events_read(void *buf, size_t offset, size_t len);
 extern size_t dispinfo_read(void *buf, size_t offset, size_t len);
+extern size_t fb_write(const void *buf, size_t offset, size_t len);
 static size_t file_read(void *buf, size_t offset, size_t len)
 {
     return ramdisk_read(buf, offset, len);
@@ -47,6 +48,7 @@ static Finfo file_table[] __attribute__((used)) = {
     [FD_STDERR] = {"stderr", 0, 0, invalid_read, serial_write},
     {"/dev/events", 0, 0, events_read, invalid_write},
     {"/proc/dispinfo", 0, 0, dispinfo_read, invalid_write},
+    {"/dev/fb", 0, 0, invalid_read, fb_write},
 #include "files.h"
 };
 
@@ -106,6 +108,15 @@ size_t fs_lseek(int fd, size_t offset, int whence)
     return file_table[fd].open_offset;
 }
 
+void fb_init()
+{
+    AM_GPU_CONFIG_T gpu_config;
+    ioe_read(AM_GPU_CONFIG, &gpu_config);
+    int width = gpu_config.width, height = gpu_config.height;
+    int fb_fd = fs_open("/dev/fb", 0, 0);
+    file_table[fb_fd].size = width * height;
+}
+
 void init_fs()
 {
     // TODO: initialize the size of /dev/fb
@@ -116,4 +127,5 @@ void init_fs()
             file_table[i].write = file_write;
         file_table[i].open_offset = 0;
     }
+    fb_init();
 }
