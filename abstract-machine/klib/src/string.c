@@ -113,7 +113,7 @@ void *memmove(void *dst, const void *src, size_t n)
 void *memcpy(void *out, const void *in, size_t n)
 {
     printf("%d\n", (int)n);
-    printf("in: %p, out: %p\n", in, out);
+    printf("in: %d, out: %d\n", in, out);
     assert(in && out);
     size_t i;
     for (i = 0; i < n; i++) {
