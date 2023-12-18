@@ -82,7 +82,7 @@ extern char end;
 static char *new_end = &end;
 void *_sbrk(intptr_t increment)
 {
-    printf("test");
+    // printf("test");
     if (_syscall_(SYS_brk, increment, 0, 0) == 0) {
         new_end += increment;
         return (void *)new_end;
