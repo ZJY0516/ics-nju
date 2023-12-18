@@ -112,8 +112,8 @@ void *memmove(void *dst, const void *src, size_t n)
 
 void *memcpy(void *out, const void *in, size_t n)
 {
-    printf("%u\n", n);
-    printf("in: %u, out: %u\n", in, out);
+    // printf("%u\n", n);
+    // printf("in: %u, out: %u\n", in, out);
     assert(in && out);
     size_t i;
     for (i = 0; i < n; i++) {
