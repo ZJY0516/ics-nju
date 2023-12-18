@@ -82,8 +82,8 @@ extern char end;
 void *_sbrk(intptr_t increment)
 {
     static char *new_end = &end;
-    printf("1111");
-    printf("sbrk  end:%p\n", new_end);
+    putchar('t');
+    putchar('\n');
     if (_syscall_(SYS_brk, increment, 0, 0) == 0) {
         new_end += increment;
         return (void *)new_end;
