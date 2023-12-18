@@ -35,14 +35,14 @@ void *malloc(size_t size)
     // Therefore do not call panic() here, else it will yield a dead recursion:
     //   panic() -> putchar() -> (glibc) -> malloc() -> panic()
 #if !(defined(__ISA_NATIVE__) && defined(__NATIVE_USE_KLIB__))
-    panic("Not implemented");
-    // if (addr == NULL)
-    //     addr = heap.start;
-    // size_t alignment = sizeof(size_t); // memory alignment
-    // size_t aligned_size = (size + alignment - 1) / alignment * alignment;
-    // char *ret = addr;
-    // addr += aligned_size;
-    // return ret;
+    // panic("Not implemented");
+    if (addr == NULL)
+        addr = heap.start;
+    size_t alignment = sizeof(size_t); // memory alignment
+    size_t aligned_size = (size + alignment - 1) / alignment * alignment;
+    char *ret = addr;
+    addr += aligned_size;
+    return ret;
 #endif
     return NULL;
 }
