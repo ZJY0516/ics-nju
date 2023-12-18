@@ -19,7 +19,7 @@ struct BitmapHeader {
     uint32_t clrused, clrimportant;
 } __attribute__((packed));
 
-// uint32_t pixels[128 * 128];
+uint32_t pixels[1024 * 1024];
 void *BMP_Load(const char *filename, int *width, int *height)
 {
     FILE *fp = fopen(filename, "r");
@@ -38,7 +38,8 @@ void *BMP_Load(const char *filename, int *width, int *height)
     // int h = 128;
     int w = hdr.width;
     int h = hdr.height;
-    uint32_t *pixels = malloc(w * h * sizeof(uint32_t));
+    assert(h <= 1024 && w <= 1024);
+    // uint32_t *pixels = malloc(w * h * sizeof(uint32_t));
     int line_off = (w * 3 + 3) & ~0x3;
     printf("44444444444444444444444444444444\n");
     printf("addr:%p\n", pixels);
