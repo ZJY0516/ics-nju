@@ -23,8 +23,6 @@ void get_dispinfo()
     char tmp[30];
     read(fd_dis, (void *)tmp, 30);
     sscanf(tmp, "WIDTH:%d\nHEIGHT:%d\n", &dispinfo_t.width, &dispinfo_t.height);
-    // dispinfo_t.height = 300;
-    printf("width=%d, height=%d\n", dispinfo_t.width, dispinfo_t.height);
     assert(dispinfo_t.width && dispinfo_t.height);
 }
 static uint32_t get_milliseconds()
@@ -83,8 +81,8 @@ void NDL_DrawRect(uint32_t *pixels, int x, int y, int w, int h)
     }
     int fd = open("/dev/fb", 0, 0);
     for (size_t i = 0; i < h; ++i) {
-        lseek(fd, x + (y + i) * dispinfo_t.width, SEEK_SET);
-        write(fd, pixels + i * w, (size_t)w);
+        lseek(fd, (x + (y + i) * dispinfo_t.width) * 4, SEEK_SET);
+        write(fd, pixels + i * w, (size_t)w * 4);
     }
 }
 

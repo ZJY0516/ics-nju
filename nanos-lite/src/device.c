@@ -46,18 +46,17 @@ size_t dispinfo_read(void *buf, size_t offset, size_t len)
 {
     int width = gpu_config.width, height = gpu_config.height;
     sprintf(buf, "WIDTH:%d\nHEIGHT:%d\n", width, height);
-    // len
-    printf("dispinfo_read %s\n", (char *)buf);
     return strlen(buf);
 }
 
 size_t fb_write(const void *buf, size_t offset, size_t len)
 {
     assert(len);
+    offset = offset / 4;
     int y = offset / gpu_config.width;
     int x = offset - y * gpu_config.width;
     gpu_fbdraw.pixels = (void *)buf;
-    gpu_fbdraw.w = len;
+    gpu_fbdraw.w = len / 4;
     gpu_fbdraw.h = 1;
     gpu_fbdraw.x = x;
     gpu_fbdraw.y = y;
