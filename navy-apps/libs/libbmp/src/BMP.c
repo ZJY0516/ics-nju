@@ -19,7 +19,7 @@ struct BitmapHeader {
     uint32_t clrused, clrimportant;
 } __attribute__((packed));
 
-uint32_t pixels[128 * 128];
+uint32_t pixels[1024 * 1024];
 void *BMP_Load(const char *filename, int *width, int *height)
 {
     FILE *fp = fopen(filename, "r");
