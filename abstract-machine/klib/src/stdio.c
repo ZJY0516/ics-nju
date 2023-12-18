@@ -76,7 +76,7 @@ int printf(const char *fmt, ...)
 
 int vsprintf(char *out, const char *fmt, va_list ap)
 { // more format should be supported
-    int num;
+    int num, unum;
     char anything[256];
     char *tmp = anything;
     char *s = out;
@@ -90,11 +90,11 @@ int vsprintf(char *out, const char *fmt, va_list ap)
                 itoa(num, tmp, 10);
                 s = append(s, tmp);
                 break;
-            // case 'u':
-            //     unum = va_arg(ap, unsigned int);
-            //     utoa(unum, tmp, 10);
-            //     s = append(s, tmp);
-            //     break;
+            case 'u':
+                unum = va_arg(ap, unsigned int);
+                utoa(unum, tmp, 10);
+                s = append(s, tmp);
+                break;
             case 's':
                 tmp = va_arg(ap, char *);
                 s = append(s, tmp);
