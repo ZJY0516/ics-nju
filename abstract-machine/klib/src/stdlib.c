@@ -42,6 +42,7 @@ void *malloc(size_t size)
     size_t aligned_size = (size + alignment - 1) / alignment * alignment;
     char *ret = addr;
     addr += aligned_size;
+    printf("malloc: %u\n", ret);
     return ret;
 #endif
     return NULL;
