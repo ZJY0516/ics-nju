@@ -78,9 +78,9 @@ int _write(int fd, void *buf, size_t count)
 }
 
 extern char end;
+static char *new_end = &end;
 void *_sbrk(intptr_t increment)
 {
-    static char *new_end = &end;
     if (_syscall_(SYS_brk, increment, 0, 0) == 0) {
         new_end += increment;
         return (void *)new_end;
