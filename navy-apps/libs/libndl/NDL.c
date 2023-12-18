@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include <sys/time.h>
 #include <fcntl.h>
+#include <assert.h>
 
 static int evtdev = -1;
 static int fbdev = -1;
@@ -77,6 +78,7 @@ int NDL_Init(uint32_t flags)
     fscanf(fp, "WIDTH:%d\nHEIGHT:%d\n", &dispinfo_t.width, &dispinfo_t.height);
     // dispinfo_t.height = 300;
     printf("width=%d, height=%d\n", dispinfo_t.width, dispinfo_t.height);
+    assert(dispinfo_t.width && dispinfo_t.height);
     return 0;
 }
 
