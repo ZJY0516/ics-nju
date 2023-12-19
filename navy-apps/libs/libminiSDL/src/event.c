@@ -17,8 +17,10 @@ int SDL_WaitEvent(SDL_Event *event)
     // nanos-lite/src/device events_read()
     char buf[32];
     char key[16];
-    if (NDL_PollEvent(buf, sizeof(buf)) == 0)
+    if (NDL_PollEvent(buf, sizeof(buf)) == 0) {
+        event->type = SDL_KEYUP;
         return 0;
+    }
     if (strncmp(buf, "kd", 2) == 0) {
         sscanf(buf + 3, "%s\n", key);
         event->type = SDL_KEYDOWN;
