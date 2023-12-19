@@ -81,11 +81,14 @@ void NDL_DrawRect(uint32_t *pixels, int x, int y, int w, int h)
     }
     int fd = open("/dev/fb", 0, 0);
     for (size_t i = 0; i < h; ++i) {
+#ifdef __ISA_NATIVE__
         // native works
-        //  lseek(fd, (x + (y + i) * dispinfo_t.width) * 4, SEEK_SET);
-        //  write(fd, pixels + i * w, (size_t)w * 4);
+        lseek(fd, (x + (y + i) * dispinfo_t.width) * 4, SEEK_SET);
+        write(fd, pixels + i * w, (size_t)w * 4);
+#else
         lseek(fd, (x + (y + i) * dispinfo_t.width), SEEK_SET);
         write(fd, pixels + i * w, (size_t)w);
+#endif
     }
 }
 
