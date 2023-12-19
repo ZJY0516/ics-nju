@@ -15,6 +15,7 @@ int SDL_PollEvent(SDL_Event *ev) { return 0; }
 int SDL_WaitEvent(SDL_Event *event)
 {
     // nanos-lite/src/device events_read()
+    printf("wait event\n");
     char buf[32];
     char key[16];
     if (NDL_PollEvent(buf, sizeof(buf)) == 0) {
