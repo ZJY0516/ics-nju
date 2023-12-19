@@ -10,7 +10,29 @@ static const char *keyname[] = {"NONE", _KEYS(keyname)};
 
 int SDL_PushEvent(SDL_Event *ev) { return 0; }
 
-int SDL_PollEvent(SDL_Event *ev) { return 0; }
+int SDL_PollEvent(SDL_Event *ev)
+{
+    char buf[32];
+    char key[16];
+    if (NDL_PollEvent(buf, sizeof(buf)) == 0) {
+        ev->type = SDL_KEYUP;
+        return 0;
+    }
+    if (strncmp(buf, "kd", 2) == 0) {
+        sscanf(buf + 3, "%s\n", key);
+        ev->type = SDL_KEYDOWN;
+    } else if (strncmp(buf, "ku", 2) == 0) {
+        sscanf(buf + 3, "%s\n", key);
+        ev->type = SDL_KEYUP;
+    } else
+        assert(0);
+    for (int i = 0; i < NR_KEYS; i++) {
+        if (strcmp(key, keyname[i]) == 0) {
+            ev->key.keysym.sym = i;
+            break;
+        }
+    }
+}
 
 int SDL_WaitEvent(SDL_Event *event)
 {
@@ -18,10 +40,8 @@ int SDL_WaitEvent(SDL_Event *event)
     // printf("wait event\n");
     char buf[32];
     char key[16];
-    if (NDL_PollEvent(buf, sizeof(buf)) == 0) {
-        event->type = SDL_KEYUP;
-        return 0;
-    }
+    while (NDL_PollEvent(buf, 32) == 0) {
+    };
     if (strncmp(buf, "kd", 2) == 0) {
         sscanf(buf + 3, "%s\n", key);
         event->type = SDL_KEYDOWN;
