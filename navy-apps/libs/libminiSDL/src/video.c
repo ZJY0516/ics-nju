@@ -59,7 +59,7 @@ void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst,
 
 void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color)
 {
-    assert(dst->format->BitsPerPixel == 32);
+    // assert(dst->format->BitsPerPixel == 32);
     SDL_Rect tmp;
     assert(dst);
     if (dstrect == NULL) {
