@@ -141,6 +141,7 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h)
     }
     assert(i == len);
     NDL_DrawRect(buf, x, y, w, h);
+    free(buf);
 }
 
 // APIs below are already implemented.
