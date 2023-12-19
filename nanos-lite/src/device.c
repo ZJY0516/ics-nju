@@ -52,7 +52,7 @@ size_t dispinfo_read(void *buf, size_t offset, size_t len)
 size_t fb_write(const void *buf, size_t offset, size_t len)
 {
     assert(len);
-    offset = offset / 4;
+    offset = offset / 2;
     int y = offset / gpu_config.width;
     int x = offset - y * gpu_config.width;
     gpu_fbdraw.pixels = (void *)buf;
