@@ -10,10 +10,7 @@ void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst,
 {
     assert(dst && src);
     assert(dst->format->BitsPerPixel == src->format->BitsPerPixel);
-    // need more assert
-    // uint32_t s_start = srcrect->y * src->w + srcrect->x;
-    // uint32_t d_start = dstrect->y * dst->w + dstrect->x;
-    // uint32_t len = srcrect->w * srcrect->h;
+
     if (srcrect == NULL) {
         srcrect = malloc(sizeof(SDL_Rect));
         srcrect->x = 0;
@@ -21,44 +18,57 @@ void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst,
         srcrect->w = src->w;
         srcrect->h = src->h;
     }
-    // assert(srcrect->w == dstrect->w && srcrect->h == dstrect->h);
+    if (dstrect == NULL) {
+        dstrect = malloc(sizeof(SDL_Rect));
+        dstrect->x = 0;
+        dstrect->y = 0;
+        dstrect->w = dst->w;
+        dstrect->h = dst->h;
+    }
+    uint32_t s_start = srcrect->y * src->w + srcrect->x;
+    uint32_t d_start = dstrect->y * dst->w + dstrect->x;
+    // // assert(srcrect->w == dstrect->w && srcrect->h == dstrect->h);
     uint32_t src_offset, dest_offset;
     if (dst->format->BitsPerPixel == 32) {
         for (int i = 0; i < srcrect->h; i++) {
-            src_offset = (srcrect->y + i) * src->w + srcrect->x;
-            dest_offset = (dstrect->y + i) * dst->w + dstrect->x;
-            memcpy(dst->pixels + dest_offset, src->pixels + src_offset,
+            src_offset = s_start + i * src->w;
+            dest_offset = d_start + i * dst->w;
+            memcpy((uint32_t *)dst->pixels + dest_offset,
+                   (uint32_t *)src->pixels + src_offset,
                    srcrect->w * sizeof(uint32_t));
+            // pixels is uint8_t pointer!!!
         }
-    }
-    if (dst->format->BitsPerPixel == 8) {
+    } else if (dst->format->BitsPerPixel == 8) {
         for (int i = 0; i < srcrect->h; i++) {
-            src_offset = (srcrect->y + i) * src->w + srcrect->x;
-            dest_offset = (dstrect->y + i) * dst->w + dstrect->x;
+            src_offset = s_start + i * src->w;
+            dest_offset = d_start + i * dst->w;
             memcpy(dst->pixels + dest_offset, src->pixels + src_offset,
                    srcrect->w * sizeof(uint8_t));
         }
-    }
+    } else
+        assert(0);
 }
 
 void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color)
 {
     printf("11234\n");
+    assert(dst->format->BitsPerPixel == 32);
     SDL_Rect tmp;
     assert(dst);
     if (dstrect == NULL) {
         dstrect = &tmp;
         dstrect->x = 0;
         dstrect->y = 0;
-        dstrect->w = dst->w / 2;
-        dstrect->h = dst->h / 2;
+        dstrect->w = dst->w;
+        dstrect->h = dst->h;
     }
     int x = (int)dstrect->x, y = (int)dstrect->y, w = (int)dstrect->w,
         h = (int)dstrect->h;
     printf("SDL_FillRect\n");
     // dst->pixels = (uint8_t *)malloc(w * h * sizeof(uint32_t));
-    for (int i = 0; i < w * h; i++) {
-        *((uint32_t *)dst->pixels + i) = color;
+    for (int i = 0; i < h; i++) {
+        for (int j = 0; j < w; j++)
+            *((uint32_t *)dst->pixels + ((y + i) * dst->w + j)) = color;
     }
     SDL_UpdateRect(dst, x, y, w, h);
 }
