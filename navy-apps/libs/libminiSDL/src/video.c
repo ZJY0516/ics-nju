@@ -63,10 +63,18 @@ void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color)
     }
     int x = (int)dstrect->x, y = (int)dstrect->y, w = (int)dstrect->w,
         h = (int)dstrect->h;
-    for (int i = 0; i < h; i++) {
-        for (int j = 0; j < w; j++)
-            *((uint32_t *)dst->pixels + ((y + i) * dst->w + j)) = color;
-    }
+    if (dst->format->BitsPerPixel == 32) {
+        for (int i = 0; i < h; i++) {
+            for (int j = 0; j < w; j++)
+                *((uint32_t *)dst->pixels + ((y + i) * dst->w + j)) = color;
+        }
+    } else if (dst->format->BitsPerPixel == 8) {
+        for (int i = 0; i < h; i++) {
+            for (int j = 0; j < w; j++)
+                *((uint8_t *)dst->pixels + ((y + i) * dst->w + j)) = color;
+        }
+    } else
+        assert(0);
     SDL_UpdateRect(dst, x, y, w, h);
 }
 
@@ -84,7 +92,13 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h)
     uint8_t red, green, blue, alpha;
     SDL_PixelFormat *fmt = s->format;
     for (int i = 0; i < len; i++) {
-        pixel = *((uint32_t *)s->pixels + i);
+        if (s->format->BitsPerPixel == 32) {
+            pixel = *((uint32_t *)s->pixels + i);
+        } else if (s->format->BitsPerPixel == 8) {
+            SDL_Color color = s->format->palette->colors[*(s->pixels + i)];
+            pixel = color.val;
+        } else
+            assert(0);
         /* Get Red component */
         temp = pixel & fmt->Rmask;  /* Isolate red component */
         temp = temp >> fmt->Rshift; /* Shift it down to 8-bit */
