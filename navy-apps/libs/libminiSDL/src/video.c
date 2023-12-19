@@ -3,6 +3,7 @@
 #include <assert.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst,
                      SDL_Rect *dstrect)
@@ -34,8 +35,11 @@ void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst,
 
 void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color)
 {
+    printf("11234\n");
+    SDL_Rect tmp;
     assert(dst);
     if (dstrect == NULL) {
+        dstrect = &tmp;
         dstrect->x = 0;
         dstrect->y = 0;
         dstrect->w = dst->w;
@@ -43,7 +47,8 @@ void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color)
     }
     int x = (int)dstrect->x, y = (int)dstrect->y, w = (int)dstrect->w,
         h = (int)dstrect->h;
-    dst->pixels = (uint8_t *)malloc(w * h * sizeof(uint32_t));
+    printf("SDL_FillRect\n");
+    // dst->pixels = (uint8_t *)malloc(w * h * sizeof(uint32_t));
     for (int i = 0; i < w * h; i++) {
         *((uint32_t *)dst->pixels + i) = color;
     }
