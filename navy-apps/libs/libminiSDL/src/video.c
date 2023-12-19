@@ -35,6 +35,12 @@ void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst,
 void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color)
 {
     assert(dst);
+    if (dstrect == NULL) {
+        dstrect->x = 0;
+        dstrect->y = 0;
+        dstrect->w = dst->w;
+        dstrect->h = dst->h;
+    }
     int x = (int)dstrect->x, y = (int)dstrect->y, w = (int)dstrect->w,
         h = (int)dstrect->h;
     dst->pixels = (uint8_t *)malloc(w * h * sizeof(uint32_t));
