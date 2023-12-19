@@ -41,6 +41,7 @@ int SDL_WaitEvent(SDL_Event *event)
     char buf[32];
     char key[16];
     while (NDL_PollEvent(buf, 32) == 0) {
+        event->type = SDL_KEYUP;
     };
     if (strncmp(buf, "kd", 2) == 0) {
         sscanf(buf + 3, "%s\n", key);
