@@ -56,7 +56,7 @@ size_t fb_write(const void *buf, size_t offset, size_t len)
     int y = offset / gpu_config.width;
     int x = offset - y * gpu_config.width;
     gpu_fbdraw.pixels = (void *)buf;
-    gpu_fbdraw.w = len / 4;
+    gpu_fbdraw.w = len / 2;
     gpu_fbdraw.h = 1;
     gpu_fbdraw.x = x;
     gpu_fbdraw.y = y;
