@@ -91,45 +91,55 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h)
     assert(w && h);
     uint32_t len = w * h;
     uint32_t *buf = malloc(sizeof(uint32_t) * len);
+    uint32_t start = y * s->w + x;
+    uint32_t i = 0;
 
     uint32_t temp, pixel;
     uint8_t red, green, blue, alpha;
     SDL_PixelFormat *fmt = s->format;
-    for (int i = 0; i < len; i++) {
-        if (s->format->BitsPerPixel == 32) {
-            pixel = *((uint32_t *)s->pixels + i);
-        } else if (s->format->BitsPerPixel == 8) {
-            assert(s->format->palette);
-            SDL_Color color = s->format->palette->colors[*(s->pixels + i)];
-            pixel = color.val;
-        } else
-            assert(0);
-        /* Get Red component */
-        temp = pixel & fmt->Rmask;  /* Isolate red component */
-        temp = temp >> fmt->Rshift; /* Shift it down to 8-bit */
-        temp = temp << fmt->Rloss;  /* Expand to a full 8-bit number */
-        red = (uint8_t)temp;
+    for (int row = 0; row < h; row++) {
+        for (int col = 0; col < w; col++) {
+            if (s->format->BitsPerPixel == 32) {
+                pixel = *((uint32_t *)s->pixels + start + row * s->w + col);
 
-        /* Get Green component */
-        temp = pixel & fmt->Gmask;  /* Isolate green component */
-        temp = temp >> fmt->Gshift; /* Shift it down to 8-bit */
-        temp = temp << fmt->Gloss;  /* Expand to a full 8-bit number */
-        green = (uint8_t)temp;
+                /* Get Red component */
+                temp = pixel & fmt->Rmask;  /* Isolate red component */
+                temp = temp >> fmt->Rshift; /* Shift it down to 8-bit */
+                temp = temp << fmt->Rloss;  /* Expand to a full 8-bit number */
+                red = (uint8_t)temp;
 
-        /* Get Blue component */
-        temp = pixel & fmt->Bmask;  /* Isolate blue component */
-        temp = temp >> fmt->Bshift; /* Shift it down to 8-bit */
-        temp = temp << fmt->Bloss;  /* Expand to a full 8-bit number */
-        blue = (uint8_t)temp;
+                /* Get Green component */
+                temp = pixel & fmt->Gmask;  /* Isolate green component */
+                temp = temp >> fmt->Gshift; /* Shift it down to 8-bit */
+                temp = temp << fmt->Gloss;  /* Expand to a full 8-bit number */
+                green = (uint8_t)temp;
 
-        /* Get Alpha component */
-        temp = pixel & fmt->Amask;  /* Isolate alpha component */
-        temp = temp >> fmt->Ashift; /* Shift it down to 8-bit */
-        temp = temp << fmt->Aloss;  /* Expand to a full 8-bit number */
-        alpha = (uint8_t)temp;
+                /* Get Blue component */
+                temp = pixel & fmt->Bmask;  /* Isolate blue component */
+                temp = temp >> fmt->Bshift; /* Shift it down to 8-bit */
+                temp = temp << fmt->Bloss;  /* Expand to a full 8-bit number */
+                blue = (uint8_t)temp;
 
-        *(buf + i) = (alpha << 24) | (red << 16) | (green << 8) | (blue);
+                /* Get Alpha component */
+                temp = pixel & fmt->Amask;  /* Isolate alpha component */
+                temp = temp >> fmt->Ashift; /* Shift it down to 8-bit */
+                temp = temp << fmt->Aloss;  /* Expand to a full 8-bit number */
+                alpha = (uint8_t)temp;
+
+                buf[i++] = (alpha << 24) | (red << 16) | (green << 8) | (blue);
+                i++;
+            } else if (s->format->BitsPerPixel == 8) {
+                assert(s->format->palette);
+                SDL_Color color =
+                    s->format->palette
+                        ->colors[*(s->pixels + start + row * s->w + col)];
+                buf[i++] =
+                    color.a << 24 | color.r << 16 | color.g << 8 | color.b;
+            } else
+                assert(0);
+        }
     }
+    assert(i == len);
     NDL_DrawRect(buf, x, y, w, h);
 }
 
