@@ -39,7 +39,7 @@ size_t events_read(void *buf, size_t offset, size_t len)
     // snprintf(buf, 3, "1234");
     //  should use snprintf. TODO
     size_t re = strlen(buf);
-    // assert(re <= len);
+    // assert(re <= len); //leave a question
     return re;
 }
 
