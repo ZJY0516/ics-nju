@@ -21,22 +21,22 @@ void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst,
         srcrect->w = src->w;
         srcrect->h = src->h;
     }
-    assert(srcrect->w == dstrect->w && srcrect->h == dstrect->h);
+    // assert(srcrect->w == dstrect->w && srcrect->h == dstrect->h);
     uint32_t src_offset, dest_offset;
     if (dst->format->BitsPerPixel == 32) {
-        for (int i = 0; i < dstrect->h; i++) {
+        for (int i = 0; i < srcrect->h; i++) {
             src_offset = (srcrect->y + i) * src->w + srcrect->x;
             dest_offset = (dstrect->y + i) * dst->w + dstrect->x;
             memcpy(dst->pixels + dest_offset, src->pixels + src_offset,
-                   dstrect->w * sizeof(uint32_t));
+                   srcrect->w * sizeof(uint32_t));
         }
     }
     if (dst->format->BitsPerPixel == 8) {
-        for (int i = 0; i < dstrect->h; i++) {
+        for (int i = 0; i < srcrect->h; i++) {
             src_offset = (srcrect->y + i) * src->w + srcrect->x;
             dest_offset = (dstrect->y + i) * dst->w + dstrect->x;
             memcpy(dst->pixels + dest_offset, src->pixels + src_offset,
-                   dstrect->w * sizeof(uint8_t));
+                   srcrect->w * sizeof(uint8_t));
         }
     }
 }
