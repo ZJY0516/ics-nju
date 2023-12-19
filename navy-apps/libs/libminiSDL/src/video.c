@@ -14,6 +14,14 @@ void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst,
     // uint32_t s_start = srcrect->y * src->w + srcrect->x;
     // uint32_t d_start = dstrect->y * dst->w + dstrect->x;
     // uint32_t len = srcrect->w * srcrect->h;
+    if (srcrect == NULL) {
+        srcrect = malloc(sizeof(SDL_Rect));
+        srcrect->x = 0;
+        srcrect->y = 0;
+        srcrect->w = src->w;
+        srcrect->h = src->h;
+    }
+    assert(srcrect->w == dstrect->w && srcrect->h == dstrect->h);
     uint32_t src_offset, dest_offset;
     if (dst->format->BitsPerPixel == 32) {
         for (int i = 0; i < dstrect->h; i++) {
