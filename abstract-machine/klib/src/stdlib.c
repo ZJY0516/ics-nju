@@ -56,12 +56,12 @@ void *malloc(size_t size)
     // panic("Not implemented");
     if (addr == NULL)
         addr = heap.start;
-    printf("heap start: %u\n", heap.start);
+    // printf("heap start: %u\n", heap.start);
     size_t alignment = sizeof(size_t); // memory alignment
     size_t aligned_size = (size + alignment - 1) / alignment * alignment;
     char *ret = addr;
     addr += aligned_size;
-    printf("malloc: %u\n", ret);
+    // printf("malloc: %u\n", ret);
     return ret;
 
     // printf("malloc: %u   size: %u\n", mem_heap.ptr, size);
