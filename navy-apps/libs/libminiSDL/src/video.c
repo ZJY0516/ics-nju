@@ -10,13 +10,14 @@ void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst,
 {
     assert(dst && src);
     assert(dst->format->BitsPerPixel == src->format->BitsPerPixel);
-
+    int is_malloc_srcrect = 0, is_malloc_dstrect = 0;
     if (srcrect == NULL) {
         srcrect = malloc(sizeof(SDL_Rect));
         srcrect->x = 0;
         srcrect->y = 0;
         srcrect->w = src->w;
         srcrect->h = src->h;
+        is_malloc_srcrect = 1;
     }
     if (dstrect == NULL) {
         dstrect = malloc(sizeof(SDL_Rect));
@@ -24,6 +25,7 @@ void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst,
         dstrect->y = 0;
         dstrect->w = dst->w;
         dstrect->h = dst->h;
+        is_malloc_dstrect = 1;
     }
     uint32_t s_start = srcrect->y * src->w + srcrect->x;
     uint32_t d_start = dstrect->y * dst->w + dstrect->x;
@@ -47,6 +49,12 @@ void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst,
         }
     } else
         assert(0);
+    if (is_malloc_dstrect) {
+        free(dstrect);
+    }
+    if (is_malloc_srcrect) {
+        free(srcrect);
+    }
 }
 
 void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color)
