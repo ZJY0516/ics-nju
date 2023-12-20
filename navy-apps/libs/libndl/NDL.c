@@ -73,12 +73,12 @@ void NDL_DrawRect(uint32_t *pixels, int x, int y, int w, int h)
     //     w = dispinfo_t.width;
     //     h = dispinfo_t.height;
     // }
-    if (w < dispinfo_t.width) {
-        x = (dispinfo_t.width - w) / 2;
-    }
-    if (h < dispinfo_t.height) {
-        y = (dispinfo_t.height - h) / 2;
-    }
+    // if (w < dispinfo_t.width) {
+    //     x = (dispinfo_t.width - w) / 2;
+    // }
+    // if (h < dispinfo_t.height) {
+    //     y = (dispinfo_t.height - h) / 2;
+    // }
     int fd = open("/dev/fb", 0, 0);
     for (size_t i = 0; i < h; ++i) {
 #ifdef __ISA_NATIVE__
