@@ -195,7 +195,7 @@ static int decode_exec(Decode *s)
             I, // bool tmp;
                //  word_t NO = isa_reg_str2val("a7", &tmp);
             IFDEF(CONFIG_ETRACE, Log("exception! mcause=%u\n", NO));
-            s->dnpc = isa_raise_intr(0xb, s->pc););
+            s->dnpc = isa_raise_intr(cpu.mcause, s->pc););
     INSTPAT("??????? ????? ????? ??? ????? 11011 11", jal, J, R(rd) = s->pc + 4;
             IFDEF(CONFIG_FTRACE,
                   {
