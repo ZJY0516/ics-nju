@@ -26,7 +26,7 @@ static void sh_prompt() { sh_printf("sh> "); }
 
 static void sh_handle_cmd(const char *cmd)
 {
-
+    // need enhancement!
     char *t = (char *)malloc(strlen(cmd) + 1);
     strcpy(t, cmd);
     if (*t == '\n') {
