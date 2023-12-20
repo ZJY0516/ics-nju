@@ -28,10 +28,10 @@ int atoi(const char *nptr)
     }
     return x;
 }
-// #if !(defined(__ISA_NATIVE__) && defined(__NATIVE_USE_KLIB__))
+#if !(defined(__ISA_NATIVE__) && defined(__NATIVE_USE_KLIB__))
 static char *addr = NULL;
 extern Area heap;
-// #endif
+#endif
 //  #define HEAP_SIZE 1000000
 //  static uint8_t mem[HEAP_SIZE];
 //  typedef struct heap {
