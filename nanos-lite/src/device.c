@@ -61,7 +61,7 @@ size_t fb_write(const void *buf, size_t offset, size_t len)
     gpu_fbdraw.h = 1;
     gpu_fbdraw.x = x;
     gpu_fbdraw.y = y;
-    gpu_fbdraw.sync = 1;
+    gpu_fbdraw.sync = 0; // leave a question
     ioe_write(AM_GPU_FBDRAW, &gpu_fbdraw);
     return len;
 }

@@ -28,20 +28,24 @@ void do_syscall(Context *c)
                        (char *const *)call_para[2]);
         break;
     case SYS_exit:
-        halt(c->GPR2); // i don't understand
+        printf("code:%d\n", (int)call_para[0]);
+        if (call_para[0] == 0) {
+            sys_execve("/bin/menu", NULL, NULL);
+        } else
+            halt(call_para[0]); // i don't understand
         break;
     case SYS_yield:
         yield();
         c->GPRx = 0;
         break;
     case SYS_write:
-        if (call_para[0] == 1 || call_para[0] == 2) {
-            for (int i = 0; i < call_para[2]; i++) {
-                putch(*(char *)(call_para[1] + i));
-            }
-            c->GPRx = call_para[2];
-            break;
-        }
+        // if (call_para[0] == 1 || call_para[0] == 2) {
+        //     for (int i = 0; i < call_para[2]; i++) {
+        //         putch(*(char *)(call_para[1] + i));
+        //     }
+        //     c->GPRx = call_para[2];
+        //     break;
+        // }
         c->GPRx =
             fs_write(call_para[0], (const void *)call_para[1], call_para[2]);
         break;
