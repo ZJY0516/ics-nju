@@ -56,14 +56,16 @@ static Finfo file_table[] __attribute__((used)) = {
 
 int fs_open(const char *pathname, int flags, int mode)
 {
-    for (int i = 0; i < NR_FILE; i++) {
+    int i = -1;
+    for (i = 0; i < NR_FILE; i++) {
         if (strcmp(pathname, file_table[i].name) == 0) {
             file_table[i].open_offset = 0;
             return i;
         }
     }
     printf("No such file: %s\n", pathname);
-    assert(0);
+    // assert(0);
+    return i;
 }
 
 size_t fs_read(int fd, void *buf, size_t len)
