@@ -30,7 +30,7 @@ void do_syscall(Context *c)
     case SYS_exit:
         printf("code:%d\n", (int)call_para[0]);
         if (call_para[0] == 0) {
-            sys_execve("/bin/menu", NULL, NULL);
+            sys_execve("/bin/nterm", NULL, NULL);
         } else
             halt(call_para[0]); // i don't understand
         break;
