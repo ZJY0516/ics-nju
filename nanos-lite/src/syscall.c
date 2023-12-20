@@ -9,9 +9,9 @@ extern void naive_uload(PCB *pcb, const char *filename);
 int sys_execve(const char *pathname, char *const argv[], char *const envp[])
 {
     // 1 stands for failure, no such file
-    if (fs_open(pathname, 0, 0) == -1) {
-        return 1;
-    }
+    // if (fs_open(pathname, 0, 0) == -1) {
+    //     return 1;
+    // }
     naive_uload(NULL, pathname);
     return -1;
 }
@@ -32,7 +32,7 @@ void do_syscall(Context *c)
                        (char *const *)call_para[2]);
         break;
     case SYS_exit:
-        printf("code:%d\n", (int)call_para[0]);
+        // printf("code:%d\n", (int)call_para[0]);
         if (call_para[0] == 0) {
             sys_execve("/bin/nterm", NULL, NULL);
         } else
