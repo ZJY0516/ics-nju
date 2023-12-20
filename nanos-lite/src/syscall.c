@@ -8,6 +8,10 @@ static intptr_t heap_brk;
 extern void naive_uload(PCB *pcb, const char *filename);
 int sys_execve(const char *pathname, char *const argv[], char *const envp[])
 {
+    // 1 stands for failure, no such file
+    if (fs_open(pathname, 0, 0) == -1) {
+        return 1;
+    }
     naive_uload(NULL, pathname);
     return -1;
 }
