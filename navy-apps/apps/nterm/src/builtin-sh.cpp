@@ -38,7 +38,8 @@ static void sh_handle_cmd(const char *cmd)
         }
         t[i] = '\0';
     }
-    execvp(t, NULL);
+    if (execvp(t, NULL) == 1)
+        return;
 }
 
 void builtin_sh_run()
