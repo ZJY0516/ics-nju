@@ -16,6 +16,7 @@ static struct dispinfo {
     int width;
     int height;
 } dispinfo_t;
+uint32_t x_canvas_offset = 0, y_canvas_offset = 0;
 
 void get_dispinfo()
 {
@@ -43,6 +44,12 @@ void NDL_OpenCanvas(int *w, int *h)
         *h = dispinfo_t.height;
     }
     assert(*w <= dispinfo_t.width && *h <= dispinfo_t.height);
+    if (*w < dispinfo_t.width) {
+        x_canvas_offset = (dispinfo_t.width - *w) / 2;
+    }
+    if (*h < dispinfo_t.height) {
+        y_canvas_offset = (dispinfo_t.height - *h) / 2;
+    }
     // printf("w=%d, h=%d", *w, *h);
     if (getenv("NWM_APP")) {
         int fbctl = 4;
@@ -69,6 +76,8 @@ void NDL_OpenCanvas(int *w, int *h)
 void NDL_DrawRect(uint32_t *pixels, int x, int y, int w, int h)
 {
     assert(w && h);
+    x += x_canvas_offset;
+    y += y_canvas_offset;
     // if (w == 0 && h == 0) {
     //     w = dispinfo_t.width;
     //     h = dispinfo_t.height;
