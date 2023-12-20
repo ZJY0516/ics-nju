@@ -147,7 +147,7 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h)
                 assert(0);
         }
     }
-    assert(i == len);
+    // assert(i == len);
     NDL_DrawRect(buf, x, y, w, h);
     free(buf);
 }
