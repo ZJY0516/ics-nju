@@ -70,7 +70,7 @@ int printf(const char *fmt, ...)
     for (const char *p = out; *p; p++) {
         putch(*p);
     }
-    memset(out, '\0', sizeof(out));
+    // memset(out, '\0', sizeof(out));
     return re;
 }
 

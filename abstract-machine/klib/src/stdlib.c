@@ -28,25 +28,27 @@ int atoi(const char *nptr)
     }
     return x;
 }
+// #if !(defined(__ISA_NATIVE__) && defined(__NATIVE_USE_KLIB__))
 static char *addr = NULL;
 extern Area heap;
-// #define HEAP_SIZE 1000000
-// static uint8_t mem[HEAP_SIZE];
-// typedef struct heap {
-//     uint8_t *start;
-//     uint8_t *end;
-//     uint8_t *ptr;
-//     uint8_t *mem;
-//     uint32_t size;
-//     /* data */
-// } Heap;
-// static Heap mem_heap = {
-//     .mem = mem,
-//     .start = mem,
-//     .end = mem + HEAP_SIZE - 1,
-//     .ptr = mem,
-//     .size = HEAP_SIZE,
-// };
+// #endif
+//  #define HEAP_SIZE 1000000
+//  static uint8_t mem[HEAP_SIZE];
+//  typedef struct heap {
+//      uint8_t *start;
+//      uint8_t *end;
+//      uint8_t *ptr;
+//      uint8_t *mem;
+//      uint32_t size;
+//      /* data */
+//  } Heap;
+//  static Heap mem_heap = {
+//      .mem = mem,
+//      .start = mem,
+//      .end = mem + HEAP_SIZE - 1,
+//      .ptr = mem,
+//      .size = HEAP_SIZE,
+//  };
 void *malloc(size_t size)
 {
     // On native, malloc() will be called during initializaion of C runtime.
