@@ -12,11 +12,16 @@ Context *__am_irq_handle(Context *c)
         Event ev = {0};
         switch (c->mcause) {
         case 0xb:
-            ev.event = EVENT_YIELD; // how to choose event through mcause
+            if (c->GPR1 == -1) {
+                ev.event = EVENT_YIELD;
+            } else {
+                ev.event = EVENT_SYSCALL;
+            } // how to choose event through mcause
             break;
         default:
-            // ev.event = EVENT_ERROR;
-            ev.event = EVENT_SYSCALL; // so just distiniguish yield and syscall?
+            ev.event = EVENT_ERROR;
+            // ev.event = EVENT_SYSCALL; // so just distiniguish yield and
+            // syscall?
             break;
         }
 
