@@ -2,8 +2,16 @@
 #include <sys/time.h>
 #include "syscall.h"
 #include <fs.h>
+#include <proc.h>
 #include "../../nemu/include/generated/autoconf.h"
 static intptr_t heap_brk;
+extern void naive_uload(PCB *pcb, const char *filename);
+int sys_execve(const char *pathname, char *const argv[], char *const envp[])
+{
+    naive_uload(NULL, pathname);
+    return -1;
+}
+
 void do_syscall(Context *c)
 {
     uintptr_t a[4];
@@ -14,6 +22,11 @@ void do_syscall(Context *c)
     call_para[2] = c->GPR4;
 
     switch (a[0]) {
+    case SYS_execve:
+        c->GPRx =
+            sys_execve((const char *)call_para[0], (char *const *)call_para[1],
+                       (char *const *)call_para[2]);
+        break;
     case SYS_exit:
         halt(c->GPR2); // i don't understand
         break;

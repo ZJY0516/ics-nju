@@ -135,7 +135,6 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h)
                 alpha = (uint8_t)temp;
 
                 buf[i++] = (alpha << 24) | (red << 16) | (green << 8) | (blue);
-                i++;
             } else if (s->format->BitsPerPixel == 8) {
                 assert(s->format->palette);
                 SDL_Color color =
@@ -147,8 +146,9 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h)
                 assert(0);
         }
     }
-    // assert(i == len);
+    assert(i == len);
     NDL_DrawRect(buf, x, y, w, h);
+    // remeber free
     free(buf);
 }
 
