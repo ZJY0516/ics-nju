@@ -164,23 +164,23 @@ static int decode_exec(Decode *s)
     INSTPAT("??????? ????? ????? 010 ????? 11100 11", csrrs, I,
             csr = choose_csr(imm);
             word_t t = *csr; *csr = t | src1; R(rd) = t;);
-    INSTPAT(
-        "??????? ????? ????? 001 ????? 11100 11", csrrw, I,
-        // csr = choose_csr(imm);
-        // word_t t = *csr; *csr = src1; R(rd) = t;
-        if (imm == 0x300) {
-            R(rd) = cpu.mstatus;
-            cpu.mstatus = src1;
-        } else if (imm == 0x305) {
-            R(rd) = cpu.mstatus;
-            cpu.mtvec = src1;
-        } else if (imm == 0x341) {
-            R(rd) = cpu.mepc;
-            cpu.mepc = src1;
-        } else if (imm == 0x342) {
-            R(rd) = cpu.mcause;
-            cpu.mcause = src1;
-        } else { Assert(0, "not support CSR"); });
+    INSTPAT("??????? ????? ????? 001 ????? 11100 11", csrrw, I,
+            csr = choose_csr(imm);
+            word_t t = *csr; *csr = src1; R(rd) = t;
+            // if (imm == 0x300) {
+            //     R(rd) = cpu.mstatus;
+            //     cpu.mstatus = src1;
+            // } else if (imm == 0x305) {
+            //     R(rd) = cpu.mstatus;
+            //     cpu.mtvec = src1;
+            // } else if (imm == 0x341) {
+            //     R(rd) = cpu.mepc;
+            //     cpu.mepc = src1;
+            // } else if (imm == 0x342) {
+            //     R(rd) = cpu.mcause;
+            //     cpu.mcause = src1;
+            // } else { Assert(0, "not support CSR"); }
+    );
     INSTPAT(
         "0000001 ????? ????? 100 ????? 01100 11", div, R,
         if (src2 == 0) { R(rd) = -1; } else {
