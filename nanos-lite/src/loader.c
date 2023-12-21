@@ -18,6 +18,9 @@ static uintptr_t loader(PCB *pcb, const char *filename)
     fs_read(fd, &elf_header, sizeof(Elf_Ehdr));
     // ramdisk_read(&elf_header, 0, sizeof(Elf_Ehdr));
     assert((*(uint32_t *)elf_header.e_ident == 0x464c457f));
+#ifdef __ISA_RISCV32__
+    assert(elf_header.e_machine == EM_RISCV);
+#endif
     int numSegments = elf_header.e_phnum;
     Elf_Phdr *programHeaders =
         (Elf_Phdr *)malloc(sizeof(Elf_Phdr) * numSegments);
