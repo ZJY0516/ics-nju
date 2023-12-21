@@ -126,7 +126,6 @@ void fb_init()
 
 void init_fs()
 {
-    return;
     // TODO: initialize the size of /dev/fb
     for (int i = 0; i < NR_FILE; i++) {
         if (file_table[i].read == NULL)
