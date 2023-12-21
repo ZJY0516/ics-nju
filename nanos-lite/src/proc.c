@@ -25,7 +25,7 @@ void init_proc()
     switch_boot_pcb();
 
     Log("Initializing processes...");
-
+    return;
     // load program here
     naive_uload(NULL, "/bin/hello"); // menu or menu? hhh
 }
