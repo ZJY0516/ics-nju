@@ -21,8 +21,8 @@ void hello_fun(void *arg)
 {
     int j = 1;
     while (1) {
-        Log("Hello World from Nanos-lite with arg '%p' for the %dth time!",
-            (uintptr_t)arg, j);
+        Log("Hello World from Nanos-lite with arg '%d' for the %dth time!",
+            (int)arg, j);
         j++;
         yield();
     }
@@ -30,14 +30,14 @@ void hello_fun(void *arg)
 
 void init_proc()
 {
-    context_kload(&pcb[0], hello_fun, (void *)0x114);
-    context_kload(&pcb[1], hello_fun, (void *)0x514);
+    context_kload(&pcb[0], hello_fun, (void *)114);
+    context_kload(&pcb[1], hello_fun, (void *)514);
     switch_boot_pcb();
 
     Log("Initializing processes...");
 
     // load program here
-    // naive_uload(NULL, "/bin/menu"); // menu or menu? hhh
+    naive_uload(NULL, "/bin/menu"); // menu or menu? hhh
 }
 
 Context *schedule(Context *prev)
