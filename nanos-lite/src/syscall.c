@@ -39,9 +39,9 @@ void do_syscall(Context *c)
             halt(call_para[0]); // i don't understand
         break;
     case SYS_yield:
-        // yield();
-        // c->GPRx = 0;
-        c = schedule(c);
+        yield();
+        c->GPRx = 0;
+        // c = schedule(c);
         break;
     case SYS_write:
         // if (call_para[0] == 1 || call_para[0] == 2) {
