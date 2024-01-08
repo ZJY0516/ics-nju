@@ -7,6 +7,14 @@ static PCB pcb_boot = {};
 PCB *current = NULL;
 extern void naive_uload(PCB *pcb, const char *filename);
 
+void context_kload(PCB *pcb, void (*entry)(void *), void *arg)
+{
+    Area kstack;
+    kstack.start = pcb->stack;
+    kstack.end = pcb->stack + STACK_SIZE;
+    pcb->cp = kcontext(kstack, entry, arg);
+}
+
 void switch_boot_pcb() { current = &pcb_boot; }
 
 void hello_fun(void *arg)
@@ -22,6 +30,8 @@ void hello_fun(void *arg)
 
 void init_proc()
 {
+    context_kload(&pcb[0], hello_fun, (void *)0x114);
+    context_kload(&pcb[1], hello_fun, (void *)0x514);
     switch_boot_pcb();
 
     Log("Initializing processes...");
@@ -30,4 +40,9 @@ void init_proc()
     naive_uload(NULL, "/bin/menu"); // menu or menu? hhh
 }
 
-Context *schedule(Context *prev) { return NULL; }
+Context *schedule(Context *prev)
+{
+    current->cp = prev;
+    current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
+    return current->cp;
+}
