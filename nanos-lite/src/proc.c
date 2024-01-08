@@ -37,7 +37,7 @@ void init_proc()
     Log("Initializing processes...");
 
     // load program here
-    naive_uload(NULL, "/bin/menu"); // menu or menu? hhh
+    // naive_uload(NULL, "/bin/menu"); // menu or menu? hhh
 }
 
 Context *schedule(Context *prev)
