@@ -16,6 +16,7 @@ static AM_GPU_FBDRAW_T gpu_fbdraw;
 
 size_t serial_write(const void *buf, size_t offset, size_t len)
 {
+    yield();
     for (size_t i = 0; i < len; i++) {
         putch(*((char *)buf + i));
     }
@@ -24,6 +25,7 @@ size_t serial_write(const void *buf, size_t offset, size_t len)
 
 size_t events_read(void *buf, size_t offset, size_t len)
 {
+    yield();
     assert(strlen(buf) >= len);
     AM_INPUT_KEYBRD_T event;
     ioe_read(AM_INPUT_KEYBRD, &event);
@@ -52,6 +54,7 @@ size_t dispinfo_read(void *buf, size_t offset, size_t len)
 
 size_t fb_write(const void *buf, size_t offset, size_t len)
 {
+    yield();
     assert(len);
     offset = offset;
     int y = offset / gpu_config.width;
