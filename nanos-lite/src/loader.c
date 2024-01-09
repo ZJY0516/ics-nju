@@ -51,3 +51,13 @@ void naive_uload(PCB *pcb, const char *filename)
     Log("Jump to entry = %p", entry);
     ((void (*)())entry)();
 }
+
+void context_uload(PCB *pcb, const char *filename)
+{
+    Area stack;
+    stack.start = pcb->stack;
+    stack.end = pcb->stack + STACK_SIZE;
+    uintptr_t entry = loader(pcb, filename);
+    pcb->cp = ucontext(NULL, stack, (void *)entry);
+    pcb->cp->GPRx = (uintptr_t)heap.end;
+}
