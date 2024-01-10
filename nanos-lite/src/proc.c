@@ -29,8 +29,8 @@ void hello_fun(void *arg)
         // printf("arg-4: %s\n", (arg - 4));
         for (const char *p = (char *)arg; *p; p++)
             putch(*p);
-        printf("Hello World from Nanos-lite with arg '%s' for the %dth time!",
-               (char *)arg, j);
+        Log("Hello World from Nanos-lite with arg '%s' for the th time!",
+            (char *)arg);
         // for (const char *p = (char *)arg; *p; p++)
         //     putch(*p);
         putch('\n');
