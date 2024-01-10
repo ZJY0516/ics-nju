@@ -78,7 +78,7 @@ int printf(const char *fmt, ...)
 int vsprintf(char *out, const char *fmt, va_list ap)
 { // more format should be supported
     int num, unum;
-    char anything[256];
+    char anything[1024];
     char *tmp = anything;
     char *s = out;
     while (*fmt) {
