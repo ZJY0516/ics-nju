@@ -17,7 +17,7 @@ Context *__am_irq_handle(Context *c)
             } else {
                 ev.event = EVENT_SYSCALL;
             } // how to choose event through mcause
-            c->mepc += 4;
+            // c->mepc += 4;
             break;
         default:
             ev.event = EVENT_ERROR;
@@ -48,10 +48,6 @@ bool cte_init(Context *(*handler)(Event, Context *))
 
 Context *kcontext(Area kstack, void (*entry)(void *), void *arg)
 {
-    putch('k');
-    putch('\n');
-    printf("arg: %s\n", (char *)arg);
-    assert(0);
     Context *c = kstack.end - sizeof(Context);
     *c = (Context){0};
     c->mepc = (uintptr_t)entry;
