@@ -84,6 +84,7 @@ int vsprintf(char *out, const char *fmt, va_list ap)
     char *tmp = anything;
     char *s = out;
     while (*fmt) {
+        tmp = anything;
         if (*fmt != '%') {
             *s++ = *fmt++;
         } else {
