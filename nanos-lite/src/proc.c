@@ -31,6 +31,7 @@ void hello_fun(void *arg)
         //     (char *)arg, j);
         for (const char *p = (char *)arg; *p; p++)
             putch(*p);
+        putch('\n');
         j++;
         yield();
     }
