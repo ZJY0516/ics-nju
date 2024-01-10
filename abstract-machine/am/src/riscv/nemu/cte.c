@@ -51,6 +51,7 @@ Context *kcontext(Area kstack, void (*entry)(void *), void *arg)
     putch('k');
     putch('\n');
     printf("arg: %s\n", (char *)arg);
+    assert(0);
     Context *c = kstack.end - sizeof(Context);
     *c = (Context){0};
     c->mepc = (uintptr_t)entry;
