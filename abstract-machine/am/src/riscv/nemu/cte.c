@@ -48,6 +48,8 @@ bool cte_init(Context *(*handler)(Event, Context *))
 
 Context *kcontext(Area kstack, void (*entry)(void *), void *arg)
 {
+    putch('k');
+    putch('\n');
     printf("arg: %s\n", (char *)arg);
     Context *c = kstack.end - sizeof(Context);
     *c = (Context){0};
