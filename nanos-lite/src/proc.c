@@ -22,8 +22,10 @@ void hello_fun(void *arg)
 {
     int j = 1;
     while (1) {
-        Log("Hello World from Nanos-lite with arg '%s' for the %dth time!",
-            (char *)arg, j);
+        if (j % 100000 == 0) {
+            Log("Hello World from Nanos-lite with arg '%s' for the %dth time!",
+                (char *)arg, j / 100000);
+        }
         j++;
         yield();
     }
@@ -32,7 +34,7 @@ void hello_fun(void *arg)
 void init_proc()
 {
     context_kload(&pcb[0], hello_fun, "114");
-    context_kload(&pcb[1], hello_fun, "514");
+    context_uload(&pcb[1], "/bin/pal");
     switch_boot_pcb();
 
     Log("Initializing processes...");

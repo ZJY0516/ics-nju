@@ -84,7 +84,7 @@ int vsprintf(char *out, const char *fmt, va_list ap)
     char *tmp = anything;
     char *s = out;
     while (*fmt) {
-        tmp = anything; // pointer is dngerous!
+        tmp = anything; // pointer is dangerous!
         if (*fmt != '%') {
             *s++ = *fmt++;
         } else {

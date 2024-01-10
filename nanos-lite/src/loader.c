@@ -52,17 +52,16 @@ void naive_uload(PCB *pcb, const char *filename)
     ((void (*)())entry)();
 }
 
-void context_uload(PCB *pcb, const char *filename, char *const argv[],
-                   char *const envp[])
+void context_uload(PCB *pcb, const char *filename)
 {
-    int argc = 0;
-    while (argv[argc] != NULL) {
-        argc++;
-    }
-    int envc = 0;
-    while (envp[envc] != NULL) {
-        envc++;
-    }
+    // int argc = 0;
+    // while (argv[argc] != NULL) {
+    //     argc++;
+    // }
+    // int envc = 0;
+    // while (envp[envc] != NULL) {
+    //     envc++;
+    // }
     Area stack;
     stack.start = pcb->stack;
     stack.end = pcb->stack + STACK_SIZE;
