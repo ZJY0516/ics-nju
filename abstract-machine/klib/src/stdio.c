@@ -84,7 +84,7 @@ int vsprintf(char *out, const char *fmt, va_list ap)
     char *tmp = anything;
     char *s = out;
     while (*fmt) {
-        tmp = anything;
+        tmp = anything; // pointer is dngerous!
         if (*fmt != '%') {
             *s++ = *fmt++;
         } else {
@@ -101,9 +101,6 @@ int vsprintf(char *out, const char *fmt, va_list ap)
                 break;
             case 's':
                 tmp = va_arg(ap, char *);
-                putstr("tmp: ");
-                putstr(tmp);
-                putch('\n');
                 s = append(s, tmp);
                 break;
             }

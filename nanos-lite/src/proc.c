@@ -22,14 +22,8 @@ void hello_fun(void *arg)
 {
     int j = 1;
     while (1) {
-        assert(j < 10);
-        for (const char *p = (char *)arg; *p; p++)
-            putch(*p);
         Log("Hello World from Nanos-lite with arg '%s' for the %dth time!",
             (char *)arg, j);
-        // for (const char *p = (char *)arg; *p; p++)
-        //     putch(*p);
-        putch('\n');
         j++;
         yield();
     }
