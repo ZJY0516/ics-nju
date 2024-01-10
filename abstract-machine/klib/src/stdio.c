@@ -55,7 +55,9 @@ static char *append(char *s, char *tmp)
 {
     /*append tmp to s and return the pointer to the last character*/
     while (*tmp) {
-        *s++ = *tmp++;
+        *s = *tmp;
+        s++;
+        tmp++;
     }
     return s;
 }
@@ -101,6 +103,7 @@ int vsprintf(char *out, const char *fmt, va_list ap)
                 s = append(s, tmp);
                 break;
             }
+            memset(anything, '\0', sizeof(anything));
             fmt++;
         }
     }

@@ -25,12 +25,8 @@ void hello_fun(void *arg)
         assert(j < 10);
         for (const char *p = (char *)arg; *p; p++)
             putch(*p);
-        printf("arg: %d\n", (int)arg);
-        // printf("arg-4: %s\n", (arg - 4));
-        for (const char *p = (char *)arg; *p; p++)
-            putch(*p);
-        Log("Hello World from Nanos-lite with arg '%s' for the th time!",
-            (char *)arg);
+        Log("Hello World from Nanos-lite with arg '%s' for the %dth time!",
+            (char *)arg, j);
         // for (const char *p = (char *)arg; *p; p++)
         //     putch(*p);
         putch('\n');
