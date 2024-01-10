@@ -107,9 +107,6 @@ int vsprintf(char *out, const char *fmt, va_list ap)
                 break;
             }
             memset(anything, '\0', sizeof(anything));
-            putstr("anything: ");
-            putstr(anything);
-            putch('\n');
             fmt++;
         }
     }
