@@ -17,7 +17,7 @@ Context *__am_irq_handle(Context *c)
             } else {
                 ev.event = EVENT_SYSCALL;
             } // how to choose event through mcause
-            // c->mepc += 4;
+            c->mepc += 4;
             break;
         default:
             ev.event = EVENT_ERROR;
