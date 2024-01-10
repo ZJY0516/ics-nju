@@ -22,8 +22,8 @@ void hello_fun(void *arg)
 {
     int j = 1;
     while (1) {
-        Log("Hello World from Nanos-lite with arg '%d' for the %dth time!",
-            (int)arg, j);
+        Log("Hello World from Nanos-lite with arg '%s' for the %dth time!",
+            (char *)arg, j);
         j++;
         yield();
     }
@@ -31,7 +31,7 @@ void hello_fun(void *arg)
 
 void init_proc()
 {
-    context_uload(&pcb[0], "/bin/hello");
+    context_kload(&pcb[0], hello_fun, "pa4");
     context_uload(&pcb[1], "/bin/pal");
     switch_boot_pcb();
 
