@@ -62,7 +62,7 @@ static char *append(char *s, char *tmp)
 
 int printf(const char *fmt, ...)
 {
-    putstr("in my printf: \n");
+    // putstr("in my printf: \n");
     va_list ap;
     va_start(ap, fmt);
     char out[1024];
