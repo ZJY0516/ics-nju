@@ -65,7 +65,7 @@ int printf(const char *fmt, ...)
     // putstr("in my printf: \n");
     va_list ap;
     va_start(ap, fmt);
-    char out[1024];
+    char out[10240];
     int re = vsprintf(out, fmt, ap);
     va_end(ap);
     for (const char *p = out; *p; p++) {
@@ -78,7 +78,7 @@ int printf(const char *fmt, ...)
 int vsprintf(char *out, const char *fmt, va_list ap)
 { // more format should be supported
     int num, unum;
-    char anything[1024];
+    char anything[10240];
     char *tmp = anything;
     char *s = out;
     while (*fmt) {
