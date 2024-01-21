@@ -120,4 +120,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
         printf("args: %s\n", (char *)*(base + i));
         *(char *)args += (strlen(argv[i]) + 1);
     }
+    for (int i = 0; i < argc; ++i) {
+        printf("args: %s\n", (char *)*(base + i));
+    }
 }
