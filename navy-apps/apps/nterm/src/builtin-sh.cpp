@@ -50,7 +50,6 @@ static void sh_handle_cmd(const char *cmd)
     char *path = getenv("PATH");
     char *path_cpy =
         (char *)memcpy(malloc(strlen(path) + 1), path, strlen(path) + 1);
-    printf("path: %s\n", path_cpy);
     char *p = strtok(path_cpy, ":");
     while (p != NULL) {
         setenv("PATH", p, 1);
