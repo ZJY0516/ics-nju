@@ -63,7 +63,8 @@ static void sh_handle_cmd(const char *cmd)
         p = strtok(NULL, ":");
     }
     setenv("PATH", path_cpy, 1);
-    execvp(argv[0], argv);
+    // execvp(argv[0], argv);
+    return;
 }
 
 void builtin_sh_run()
