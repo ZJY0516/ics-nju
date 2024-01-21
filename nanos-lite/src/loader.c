@@ -92,14 +92,12 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
 
     uintptr_t *base =
         (uintptr_t *)(stack.end - space * 2 * sizeof(char)); // leave a question
-    uintptr_t *base_mem = base;
 
     *(int *)base = argc;
     base += 1;
     char *argv_temp[argc];
     base += argc + 1; // jump to string area
     char *str_area_curr = (char *)base;
-    uintptr_t *str_area_curr_mem = (uintptr_t *)str_area_curr;
 
     for (int i = 0; i < argc; ++i) {
         strcpy(str_area_curr, argv[i]);
@@ -117,8 +115,4 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
     }
 
     *base = (uintptr_t)NULL;
-
-    assert(str_area_curr_mem == base);
-
-    pcb->cp->GPRx = (uintptr_t)base_mem;
 }
