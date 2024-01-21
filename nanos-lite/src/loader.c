@@ -106,5 +106,6 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
     for (int i = 1; i < argc; ++i) {
         argv_temp[0] = *tmp;
         *tmp += strlen(*tmp) + 1;
+        printf("%s\n", argv_temp[i]);
     }
 }
