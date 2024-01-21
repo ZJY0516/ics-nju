@@ -99,7 +99,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
     char **tmp = argv_temp;
     tmp += argc;
     //*(tmp) = NULL;
-    tmp++;
+    // tmp++;
     // char **tmp = (char **)((int *)args + 1);
     memcpy(tmp, argv, argc * sizeof(char **));
     // argv_temp[0] = *tmp;
