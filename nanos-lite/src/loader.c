@@ -91,6 +91,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
     // space += sizeof(uintptr_t); // another null
 
     uintptr_t *base = new_page(8);
+    printf("11111\n");
     pcb->cp->GPRx = (uintptr_t)base;
     uintptr_t *args = base;
     *(int *)args = argc;
