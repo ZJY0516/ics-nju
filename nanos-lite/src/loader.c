@@ -117,6 +117,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
         //  printf("%d\n", (int)*tmp);
         strcpy((char *)args, argv[i]);
         *(base + i) = (uintptr_t)args;
+        printf("args: %s\n", (char *)*(base + i));
         *(char *)args += (strlen(argv[i]) + 1);
     }
 }
