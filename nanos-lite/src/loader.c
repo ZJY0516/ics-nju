@@ -72,8 +72,10 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
     space += sizeof(int);              // for argc
     space += sizeof(uintptr_t) * argc; // for argv
     if (argv) {
-        for (int i = 0; i < argc; ++i)
-            space += (strlen(argv[i]) + 1); // for '\0'
+        for (int i = 0; i < argc; ++i) {
+            space += strlen(argv[i]) + 1; // for '\0'
+            printf("argv: %s\n", argv[i]);
+        }
     }
     space += sizeof(uintptr_t); // a null
     // int envpc = 0;
