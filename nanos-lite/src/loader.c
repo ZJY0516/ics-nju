@@ -98,7 +98,8 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
     char **argv_temp = (char **)((int *)args + 1);
     char **tmp = argv_temp;
     tmp += argc;
-    *(tmp++) = NULL;
+    *(tmp) = NULL;
+    tmp++;
     // char **tmp = (char **)((int *)args + 1);
     memcpy(*tmp, argv, argc * sizeof(char **));
     // argv_temp[0] = *tmp;
