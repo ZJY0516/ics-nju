@@ -61,7 +61,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
 
     // argv[0] != filename
     int argc = 0;
-    if (argv)
+    if (argv) // maybe argv=null
         while (argv[argc] != NULL) {
             argc++;
         }
