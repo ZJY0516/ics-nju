@@ -34,15 +34,15 @@ void hello_fun(void *arg)
 
 void init_proc()
 {
-    char *pal_argv[] = {"--skip", "argv1", "argv2", NULL};
-    context_kload(&pcb[0], hello_fun, "114");
-    context_uload(&pcb[1], "/bin/nterm", pal_argv, NULL);
-    switch_boot_pcb();
+    // char *pal_argv[] = {"--skip", "argv1", "argv2", NULL};
+    // context_kload(&pcb[0], hello_fun, "114");
+    // context_uload(&pcb[1], "/bin/nterm", pal_argv, NULL);
+    // switch_boot_pcb();
 
     Log("Initializing processes...");
 
     // load program here
-    // naive_uload(NULL, "/bin/menu"); // menu or menu? hhh
+    naive_uload(NULL, "/bin/menu"); // menu or menu? hhh
 }
 
 Context *schedule(Context *prev)
