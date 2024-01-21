@@ -74,7 +74,6 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
     if (argv) {
         for (int i = 0; i < argc; ++i) {
             space += strlen(argv[i]) + 1; // for '\0'
-            printf("argv: %s\n", argv[i]);
         }
     }
     space += sizeof(uintptr_t); // a null
@@ -109,9 +108,6 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
     for (int i = 0; i < argc; ++i) {
         *base = (uintptr_t)argv_temp[i];
         base += 1;
-    }
-    for (int i = 0; i < argc; ++i) {
-        printf("argv: %s\n", argv_temp[i]);
     }
 
     *base = (uintptr_t)NULL;
