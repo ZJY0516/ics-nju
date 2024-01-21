@@ -108,6 +108,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
         argv_temp[i] = str_area_curr;
         str_area_curr += strlen(real_argv[i]) + 1;
     }
+    str_area_curr = NULL;
     base -= argc + 1; // jump back
 
     for (int i = 0; i < argc; ++i) {
