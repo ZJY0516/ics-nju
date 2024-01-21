@@ -92,20 +92,30 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
 
     uintptr_t *base =
         (uintptr_t *)(stack.end - space * 2 * sizeof(char)); // leave a question
-    pcb->cp->GPRx = (uintptr_t)base;
-    uintptr_t *args = base;
-    *(int *)args = argc;
-    char **argv_temp = (char **)((int *)args + 1);
-    char **tmp = argv_temp;
-    tmp += argc;
-    //*(tmp) = NULL;
-    // tmp++;
-    // char **tmp = (char **)((int *)args + 1);
-    memcpy(tmp, argv, argc * sizeof(char **));
+
+    // pcb->cp->GPRx = (uintptr_t)base;
+    // uintptr_t *args = base;
+    // *(int *)args = argc;
+    // char **argv_temp = (char **)((int *)args + 1);
+    // char **tmp = argv_temp;
+    // tmp += argc;
+    // //*(tmp) = NULL;
+    // // tmp++;
+    // // char **tmp = (char **)((int *)args + 1);
+    // memcpy(tmp, argv, argc * sizeof(char **));
     // argv_temp[0] = *tmp;
+    // Store argc
+    *(int *)base = argc;
+    base++;
+    char **argv_temp = (char **)base;
+    base += argc;
+
+    // Store argv strings
+    for (int i = 0; i < argc; i++) {
+        strcpy((char *)base, argv[i]);
+        base += strlen(argv[i]) + 1;
+    }
     for (int i = 1; i < argc; ++i) {
-        argv_temp[0] = *tmp;
-        *tmp += strlen(*tmp) + 1;
         printf("%s\n", argv_temp[i]);
     }
 }
