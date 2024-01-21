@@ -52,20 +52,64 @@ void naive_uload(PCB *pcb, const char *filename)
     ((void (*)())entry)();
 }
 
-void context_uload(PCB *pcb, const char *filename)
+void context_uload(PCB *pcb, const char *filename, char *const argv[],
+                   char *const envp[])
 {
-    // int argc = 0;
-    // while (argv[argc] != NULL) {
-    //     argc++;
-    // }
-    // int envc = 0;
-    // while (envp[envc] != NULL) {
-    //     envc++;
-    // }
     Area stack;
     stack.start = pcb->stack;
     stack.end = pcb->stack + STACK_SIZE;
     uintptr_t entry = loader(pcb, filename);
     pcb->cp = ucontext(NULL, stack, (void *)entry);
-    pcb->cp->GPRx = (uintptr_t)heap.end;
+
+    // argv[0] != filename
+    int argc = 0;
+    while (argv[argc] != NULL) {
+        argc++;
+    }
+    // argc++;
+
+    int space = 0;
+    space += sizeof(int);              // for argc
+    space += sizeof(uintptr_t) * argc; // for argv
+    if (argv) {
+        for (int i = 0; i < argc; ++i)
+            space += (strlen(argv[i]) + 1); // for '\0'
+    }
+    space += sizeof(uintptr_t); // a null
+    // int envpc = 0;
+    // if (envp)
+    //     while (envp[envpc]) {
+    //         envpc++;
+    //     }
+    // space += sizeof(uintptr_t) * (envpc + 1); // for envp and null
+    // if (envp) {
+    //     for (int i = 0; i < envpc; ++i)
+    //         space += (strlen(envp[i]) + 1);
+    // }
+    // space += sizeof(uintptr_t); // another null
+
+    uintptr_t *base =
+        (uintptr_t *)ROUNDUP(stack.end - space, sizeof(uintptr_t));
+    pcb->cp->GPRx = (uintptr_t)base;
+    uintptr_t *args = base;
+    *(int *)args = argc;
+    char **tmp = (char **)((int *)args + 1);
+    char **argv_temp = tmp;
+    // memcpy(tmp, argv, argc * sizeof(uintptr_t));
+    tmp += argc;
+    tmp++;
+    *(tmp) = NULL;
+    // tmp++;
+    // char **envp_temp = tmp;
+    // memcpy(tmp, envp, envpc * sizeof(char **));
+    // tmp += envpc;
+    // tmp++;
+    // *(tmp++) = NULL;
+    tmp++;
+    for (int i = 0; i < argc; ++i) {
+        strcpy(*tmp, argv[i]);
+        printf("argv: %s\n", argv[i]);
+        argv_temp[i] = *tmp;
+        *tmp += (strlen(argv[i]) + 1);
+    }
 }
