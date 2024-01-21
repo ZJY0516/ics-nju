@@ -58,7 +58,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
     Area stack;
     stack.start = pcb->stack;
     stack.end = pcb->stack + STACK_SIZE;
-
+    putstr("11111111\n");
     // argv[0] != filename
     int argc = 0;
     while (argv[argc] != NULL) {
