@@ -39,16 +39,16 @@ static void sh_handle_cmd(const char *cmd)
         }
         t[i] = '\0';
     }
-    // char *argv[MaxArgv];
-    // int argc = 0;
-    // char *token = strtok(t, " ");
-    // while (token != NULL) {
-    //     argv[argc++] = token;
-    //     token = strtok(NULL, " ");
-    // }
-    // argv[argc] = NULL;
+    char *argv[MaxArgv];
+    int argc = 0;
+    char *token = strtok(t, " ");
+    while (token != NULL) {
+        argv[argc++] = token;
+        token = strtok(NULL, " ");
+    }
+    argv[argc] = NULL;
 
-    execvp(t, NULL);
+    execvp(argv[0], NULL);
 }
 
 void builtin_sh_run()
