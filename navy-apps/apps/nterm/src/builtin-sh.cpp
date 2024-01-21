@@ -47,8 +47,19 @@ static void sh_handle_cmd(const char *cmd)
         token = strtok(NULL, " ");
     }
     argv[argc] = NULL;
-    printf("path: %s\n", getenv("PATH"));
-
+    char *path = getenv("PATH");
+    char *path_cpy =
+        (char *)memcpy(malloc(strlen(path) + 1), path, strlen(path) + 1);
+    char *p = strtok(path_cpy, ":");
+    while (p != NULL) {
+        setenv("PATH", p, 1);
+        if (execvp(argv[0], argv) >= 0) {
+            setenv("PATH", path_cpy, 1);
+            return;
+        }
+        p = strtok(NULL, ":");
+    }
+    setenv("PATH", path_cpy, 1);
     execvp(argv[0], argv);
 }
 
