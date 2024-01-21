@@ -54,8 +54,6 @@ static void sh_handle_cmd(const char *cmd)
     char *p = strtok(path_cpy, ":");
     while (p != NULL) {
         setenv("PATH", p, 1);
-        printf("p: %s\n", p);
-        printf("path: %s\n", getenv("PATH"));
         if (execvp(argv[0], argv) >= 0) {
             setenv("PATH", path_cpy, 1);
             return;
