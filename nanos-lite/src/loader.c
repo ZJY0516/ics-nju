@@ -90,32 +90,35 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
     // }
     // space += sizeof(uintptr_t); // another null
 
-    uintptr_t base =
-        (uintptr_t)(stack.end - space * 2 * sizeof(char)); // leave a question
+    uintptr_t *base =
+        (uintptr_t *)(stack.end - space * 2 * sizeof(char)); // leave a question
+    uintptr_t *base_mem = base;
 
-    // pcb->cp->GPRx = (uintptr_t)base;
-    // uintptr_t *args = base;
-    // *(int *)args = argc;
-    // char **argv_temp = (char **)((int *)args + 1);
-    // char **tmp = argv_temp;
-    // tmp += argc;
-    // //*(tmp) = NULL;
-    // // tmp++;
-    // // char **tmp = (char **)((int *)args + 1);
-    // memcpy(tmp, argv, argc * sizeof(char **));
-    // argv_temp[0] = *tmp;
-    // Store argc
     *(int *)base = argc;
-    base++;
-    char **argv_temp = (char **)base;
-    base += argc;
+    base += 1;
+    char *argv_temp[argc];
+    base += argc + 1; // jump to string area
+    char *str_area_curr = (char *)base;
+    uintptr_t *str_area_curr_mem = (uintptr_t *)str_area_curr;
 
-    // Store argv strings
-    for (int i = 0; i < argc; i++) {
-        strcpy((char *)base, argv[i]);
-        base += strlen(argv[i]) + 1;
+    for (int i = 0; i < argc; ++i) {
+        strcpy(str_area_curr, argv[i]);
+        argv_temp[i] = str_area_curr;
+        str_area_curr += strlen(argv[i]) + 1;
     }
-    for (int i = 1; i < argc; ++i) {
-        printf("%s\n", argv_temp[i]);
+    base -= argc + 1; // jump back
+
+    for (int i = 0; i < argc; ++i) {
+        *base = (uintptr_t)argv_temp[i];
+        base += 1;
     }
+    for (int i = 0; i < argc; ++i) {
+        printf("argv: %s\n", argv_temp[i]);
+    }
+
+    *base = (uintptr_t)NULL;
+
+    assert(str_area_curr_mem == base);
+
+    pcb->cp->GPRx = (uintptr_t)base_mem;
 }
