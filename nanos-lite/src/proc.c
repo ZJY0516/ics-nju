@@ -34,7 +34,7 @@ void hello_fun(void *arg)
 
 void init_proc()
 {
-    char *pal_argv[] = {"--skip", "argv1", "argv2", "argv3", NULL};
+    char *pal_argv[] = {"--skip", "argv1", "argv2"};
     context_kload(&pcb[0], hello_fun, "114");
     context_uload(&pcb[1], "/bin/pal", pal_argv, NULL);
     switch_boot_pcb();
