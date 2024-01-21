@@ -60,6 +60,7 @@ static void sh_handle_cmd(const char *cmd)
         }
         p = strtok(NULL, ":");
     }
+    printf("11111111111111111\n");
     setenv("PATH", path_cpy, 1);
     // execvp(argv[0], argv);
     return;
