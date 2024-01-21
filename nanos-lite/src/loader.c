@@ -70,7 +70,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
     for (int i = 0; i < argc - 1; i++) {
         real_argv[i + 1] = argv[i];
     }
-
+    putstr("11111111\n");
     int space = 0;
     space += sizeof(int);              // for argc
     space += sizeof(uintptr_t) * argc; // for argv
@@ -95,14 +95,14 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
     uintptr_t *base =
         (uintptr_t *)(ustack_end -
                       space * 2 * sizeof(char)); // leave a question
-
+    putstr("11111111\n");
     uintptr_t *_base = base;
     *(int *)base = argc;
     base += 1;
     char *argv_temp[argc];
     base += argc + 1; // jump to string area
     char *str_area_curr = (char *)base;
-
+    putstr("11111111\n");
     for (int i = 0; i < argc; ++i) {
         strcpy(str_area_curr, real_argv[i]);
         argv_temp[i] = str_area_curr;
@@ -110,7 +110,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
     }
     str_area_curr = NULL;
     base -= argc + 1; // jump back
-
+    putstr("11111111\n");
     for (int i = 0; i < argc; ++i) {
         *base = (uintptr_t)argv_temp[i];
         base += 1;
