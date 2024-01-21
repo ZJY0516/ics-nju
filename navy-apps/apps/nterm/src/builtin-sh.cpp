@@ -47,6 +47,7 @@ static void sh_handle_cmd(const char *cmd)
         token = strtok(NULL, " ");
     }
     argv[argc] = NULL;
+    printf("path: %s\n", getenv("PATH"));
 
     execvp(argv[0], argv);
 }
@@ -55,8 +56,7 @@ void builtin_sh_run()
 {
     sh_banner();
     sh_prompt();
-    setenv("PATH", "/bin/", 0);
-    setenv("PATH", "/usr/bin/", 0);
+    setenv("PATH", "/bin/:/usr/bin/", 0);
 
     while (1) {
         SDL_Event ev;
