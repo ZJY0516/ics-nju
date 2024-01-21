@@ -47,6 +47,7 @@ static void sh_handle_cmd(const char *cmd)
         token = strtok(NULL, " ");
     }
     argv[argc] = NULL;
+    printf("argv[0]: %s\n", argv[0]);
     char *path = getenv("PATH");
     char *path_cpy =
         (char *)memcpy(malloc(strlen(path) + 1), path, strlen(path) + 1);
