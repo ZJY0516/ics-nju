@@ -68,8 +68,8 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
     const char *real_argv[argc];
     real_argv[0] = filename;
     printf("filename: %s\n", filename);
-    for (int i = 1; i < argc; i++) {
-        real_argv[i] = argv[i];
+    for (int i = 0; i < argc - 1; i++) {
+        real_argv[i + 1] = argv[i];
     }
 
     int space = 0;
