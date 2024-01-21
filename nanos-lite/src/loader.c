@@ -94,6 +94,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
     pcb->cp->GPRx = (uintptr_t)base;
     uintptr_t *args = base;
     *(int *)args = argc;
+    printf("args %d", args);
     char **tmp = (char **)(args + 1);
     char **argv_temp = tmp;
     // memcpy(tmp, argv, argc * sizeof(uintptr_t));
