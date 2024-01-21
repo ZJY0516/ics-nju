@@ -6,6 +6,7 @@
 #include <string.h>
 
 char handle_key(SDL_Event *ev);
+#define MaxArgv 30
 
 static void sh_printf(const char *format, ...)
 {
@@ -38,7 +39,16 @@ static void sh_handle_cmd(const char *cmd)
         }
         t[i] = '\0';
     }
-    execvp(t, NULL);
+    char *argv[MaxArgv];
+    int argc = 0;
+    char *token = strtok(t, " ");
+    while (token != NULL) {
+        argv[argc++] = token;
+        token = strtok(NULL, " ");
+    }
+    argv[argc] = NULL;
+
+    execvp(argv[0], argv);
 }
 
 void builtin_sh_run()
