@@ -64,14 +64,19 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
     while (argv[argc] != NULL) {
         argc++;
     }
-    // argc++;
+    argc++;
+    const char *real_argv[argc];
+    real_argv[0] = filename;
+    for (int i = 1; i < argc; i++) {
+        real_argv[i] = argv[i];
+    }
 
     int space = 0;
     space += sizeof(int);              // for argc
     space += sizeof(uintptr_t) * argc; // for argv
     if (argv) {
         for (int i = 0; i < argc; ++i) {
-            space += strlen(argv[i]) + 1; // for '\0'
+            space += strlen(real_argv[i]) + 1; // for '\0'
         }
     }
     space += sizeof(uintptr_t); // a null
@@ -99,9 +104,9 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
     char *str_area_curr = (char *)base;
 
     for (int i = 0; i < argc; ++i) {
-        strcpy(str_area_curr, argv[i]);
+        strcpy(str_area_curr, real_argv[i]);
         argv_temp[i] = str_area_curr;
-        str_area_curr += strlen(argv[i]) + 1;
+        str_area_curr += strlen(real_argv[i]) + 1;
     }
     base -= argc + 1; // jump back
 
