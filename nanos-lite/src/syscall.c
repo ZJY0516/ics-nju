@@ -6,13 +6,19 @@
 #include "../../nemu/include/generated/autoconf.h"
 static intptr_t heap_brk;
 extern void naive_uload(PCB *pcb, const char *filename);
+extern void context_uload(PCB *pcb, const char *filename, char *const argv[],
+                          char *const envp[]);
+extern void switch_boot_pcb();
 int sys_execve(const char *pathname, char *const argv[], char *const envp[])
 {
     // 1 stands for failure, no such file
     // if (fs_open(pathname, 0, 0) == -1) {
     //     return 1;
     // }
-    naive_uload(NULL, pathname);
+    // naive_uload(NULL, pathname);
+    context_uload(current, pathname, argv, envp);
+    switch_boot_pcb();
+    yield();
     return -1;
 }
 

@@ -58,8 +58,6 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
     Area stack;
     stack.start = pcb->stack;
     stack.end = pcb->stack + STACK_SIZE;
-    uintptr_t entry = loader(pcb, filename);
-    pcb->cp = ucontext(NULL, stack, (void *)entry);
 
     // argv[0] != filename
     int argc = 0;
@@ -88,9 +86,10 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
     //         space += (strlen(envp[i]) + 1);
     // }
     // space += sizeof(uintptr_t); // another null
-
+    void *ustack_end = new_page(8);
     uintptr_t *base =
-        (uintptr_t *)(stack.end - space * 2 * sizeof(char)); // leave a question
+        (uintptr_t *)(ustack_end -
+                      space * 2 * sizeof(char)); // leave a question
 
     uintptr_t *_base = base;
     *(int *)base = argc;
@@ -111,5 +110,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
         base += 1;
     }
     *base = (uintptr_t)NULL;
+    uintptr_t entry = loader(pcb, filename);
+    pcb->cp = ucontext(NULL, stack, (void *)entry);
     pcb->cp->GPRx = (uintptr_t)_base;
 }
