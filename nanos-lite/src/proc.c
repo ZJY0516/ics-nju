@@ -34,9 +34,9 @@ void hello_fun(void *arg)
 
 void init_proc()
 {
-    char *pal_argv[] = {"--skip", "argv1", "argv2", NULL};
+    // char *pal_argv[] = {"--skip", "argv1", "argv2", NULL};
     context_kload(&pcb[0], hello_fun, "114");
-    context_uload(&pcb[1], "/bin/exec-test", pal_argv, NULL);
+    context_uload(&pcb[1], "/bin/menu", NULL, NULL);
     switch_boot_pcb();
 
     Log("Initializing processes...");
