@@ -113,6 +113,9 @@ word_t *choose_csr(word_t imm)
     case 0x342:
         return &cpu.mcause;
         break;
+    case 0x180:
+        return &cpu.satp;
+        break;
     default:
         assert(0);
         break;

@@ -66,10 +66,28 @@ void __am_switch(Context *c) {
   }
 }
 
-void map(AddrSpace *as, void *va, void *pa, int prot) {
+#define VPN1(va) (((uintptr_t)va >> 22) & 0x000003FF)
+#define VPN0(va) (((uintptr_t)va >> 12) & 0x000003FF)
+#define PPN(pte) ((pte) >> 12)
+
+void map(AddrSpace *as, void *va, void *pa, int prot)
+{
+    assert(as);
+    // assert(as->pgsize == PGSIZE);
+
+    uintptr_t *pte1 =
+        (uintptr_t *)((uintptr_t)as->ptr + VPN1(va) * sizeof(uintptr_t));
+    if ((*pte1 & 0x1) == 0) {
+        uintptr_t newpage = (uintptr_t)pgalloc_usr(PGSIZE);
+        *pte1 = (newpage >> 2) | 1;
+    }
+    uintptr_t *pte0 = (uintptr_t *)(PPN(*pte1) + VPN0(va) * sizeof(uintptr_t));
+
+    *pte0 = ((uintptr_t)pa >> 2) | 0xf;
 }
 
-Context *ucontext(AddrSpace *as, Area kstack, void *entry) {
+Context *ucontext(AddrSpace *as, Area kstack, void *entry)
+{
     Context *c = kstack.end - sizeof(Context);
     *c = (Context){0};
     c->mepc = (uintptr_t)entry;
